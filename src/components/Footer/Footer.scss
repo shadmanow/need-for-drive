@@ -1,0 +1,53 @@
+@import "../../assets/styles/var";
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__copyright {
+    color: $grayDarkColor;
+    font-weight: 400;
+    font-size: 13px;
+  }
+
+  &__address a {
+    color: $linkBlackDefault;
+    font-style: normal;
+    font-family: Roboto, serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+
+    &:hover {
+      color: $linkBlackHover;
+    }
+  }
+}
+
+/* Adaptive */
+.footer {
+  @media screen and (max-width: $tabletSize - 1) {
+    padding: 16px;
+    height: 72px;
+    background:  #151B1F;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: flex-end;
+
+    &__copyright {
+      color: #EEEEEE;
+    }
+
+    &__address {
+      margin-bottom: 8px;
+
+      a {
+        color: $linkGreenDefault;
+        &:hover {
+          color: $linkGreenHover;
+        }
+      }
+    }
+  }
+}

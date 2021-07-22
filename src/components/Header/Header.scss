@@ -1,0 +1,33 @@
+@import "../../assets/styles/var";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__map {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    font-weight: 400;
+    font-size: 14px;
+    color: $grayDarkColor;
+
+    :first-child {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* Adaptive */
+.header {
+  @media screen and (max-width: $tabletSize - 1) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+
+    &__logo {
+      margin-bottom: 8px;
+    }
+  }
+}

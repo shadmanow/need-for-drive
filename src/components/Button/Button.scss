@@ -1,0 +1,63 @@
+@import "../../assets/styles/var";
+
+.button {
+  width: 250px;
+  height: 48px;
+
+  background-color: $greenColor;
+  border: none;
+  border-radius: 4px;
+
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: url("../../assets/images/svg/pointer.svg"), pointer;
+
+  &.button_color-default:hover,
+  &.button_color-default:active,
+  &.button_color-default:focus {
+    background-blend-mode: darken;
+  }
+
+  &.button_color-default:hover {
+    background: linear-gradient(90deg, #0B934A 2.61%, #026E47 112.6%);
+  }
+
+  &.button_color-default:active {
+    background: linear-gradient(90deg, #076432 2.61%, #013C27 112.6%);
+  }
+
+  &.button_color-disabled {
+    background: #EEEEEE;
+  }
+
+  &.button_color-green {
+    background: linear-gradient(90deg, #13493F 0%, #0C7B1B 100%);;
+  }
+
+  &.button_color-blue {
+    background: linear-gradient(90deg, #132949 0%, #0C7B67 100%);
+  }
+
+  &.button_color-red {
+    background: linear-gradient(90deg, #493013 0%, #7B0C3B 100%);
+  }
+
+  &.button_color-purple {
+    background: linear-gradient(90deg, #281349 0%, #720C7B 100%);
+  }
+
+  &.button_color-green:hover,
+  &.button_color-blue:hover,
+  &.button_color-red:hover,
+  &.button_color-purple:hover,
+
+  &.button_color-green:active,
+  &.button_color-blue:active,
+  &.button_color-red:active,
+  &.button_color-purple:active {
+    opacity: .8;
+  }
+}

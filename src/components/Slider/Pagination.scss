@@ -1,0 +1,20 @@
+.pagination {
+  display: flex;
+
+  &__circle {
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    background: #EEEEEE;
+    margin-right: 8px;
+  }
+
+  &__circle_active {
+    background: #0EC261;
+  }
+
+  :last-child {
+    margin-right: 0;
+  }
+}
+
