@@ -18,8 +18,8 @@ const Pagination = ({count, curIndex}) => {
   const [index, setIndex] = useState(curIndex);
 
   useEffect(() => {
-    setIndex(index);
-  }, [index]);
+    setIndex(curIndex);
+  }, [curIndex]);
 
   return (
     <div className='pagination'>
