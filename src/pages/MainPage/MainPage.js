@@ -1,9 +1,9 @@
 import React from 'react';
 
+import './MainPage.scss';
 import {Footer} from "../../components/Footer/Footer";
 import {Button} from "../../components/Button/Button";
 import {Slider} from "../../components/Slider/Slider";
-import './MainPage.scss';
 import {Header} from "../../components/Header/Header";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 
