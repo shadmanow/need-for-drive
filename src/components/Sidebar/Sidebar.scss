@@ -4,7 +4,7 @@
   position: relative;
   grid-column: 1;
   box-sizing: border-box;
-  background: #151B1F;
+  background: $blackColor;
   background-size: contain;
   width: 64px;
   height: 100%;
@@ -24,6 +24,8 @@
   }
 
   &__language {
+    background: none;
+    border: none;
     width: 48px;
     height: 48px;
     display: flex;
@@ -139,6 +141,7 @@
     background: none;
 
     &__icon {
+      position: absolute;
       top: 16px;
       left: 16px;
 
@@ -177,8 +180,7 @@
     }
 
     &.sidebar__opened &__language {
-      left: 28px;
-      display: block;
+      display: flex;
     }
   }
 }

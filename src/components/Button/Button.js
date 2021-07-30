@@ -1,22 +1,15 @@
-import React from 'react';
-import './Button.scss';
+import React from 'react'
+import cn from 'classnames'
+import './Button.scss'
 
 const Button = (props) => {
-  const {
-    value,
-    color = 'default',
-    disabled = false,
-    className = ''
-  } = props;
-
+  const { value, color = 'default', disabled = false, className } = props
+  const classes = cn('button', [`button_color-${color}`], className)
   return (
-    <button
-      className={`button button_color-${color} ${className}`}
-      disabled={disabled}
-    >
-      { value }
+    <button className={classes} disabled={disabled}>
+      {value}
     </button>
   )
-};
+}
 
-export {Button}
+export { Button }

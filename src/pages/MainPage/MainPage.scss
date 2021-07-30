@@ -12,7 +12,7 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  &__left {
+  &__hero-wrapper {
     padding: 32px 64px;
     display: flex;
     flex-direction: column;
@@ -57,7 +57,7 @@
       grid-template-columns: minmax(549px, 1fr) minmax(410px, 1fr);
     }
 
-    &__left {
+    &__hero-wrapper {
       padding: 32px 32px;
     }
   }
@@ -73,7 +73,7 @@
   @media screen and (max-width: $tabletSize - 1) {
     grid-template-columns: 0 1fr;
 
-    &__left {
+    &__hero-wrapper, &__slider-wrapper {
       padding: 0;
       height: 100vh;
     }

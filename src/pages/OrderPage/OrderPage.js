@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const OrderPage = (props) => {
   return (
@@ -6,6 +6,6 @@ const OrderPage = (props) => {
       <h1>Order Page</h1>
     </div>
   )
-};
+}
 
-export {OrderPage}
+export { OrderPage }
