@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/need-for-drive/static/css/main.011c8b85.chunk.css",
-    "main.js": "/need-for-drive/static/js/main.3d32d1fc.chunk.js",
-    "main.js.map": "/need-for-drive/static/js/main.3d32d1fc.chunk.js.map",
+    "main.css": "/need-for-drive/static/css/main.8116998a.chunk.css",
+    "main.js": "/need-for-drive/static/js/main.70b247cf.chunk.js",
+    "main.js.map": "/need-for-drive/static/js/main.70b247cf.chunk.js.map",
     "runtime-main.js": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js",
     "runtime-main.js.map": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js.map",
-    "static/js/2.214e56d1.chunk.js": "/need-for-drive/static/js/2.214e56d1.chunk.js",
-    "static/js/2.214e56d1.chunk.js.map": "/need-for-drive/static/js/2.214e56d1.chunk.js.map",
+    "static/js/2.e7035fa1.chunk.js": "/need-for-drive/static/js/2.e7035fa1.chunk.js",
+    "static/js/2.e7035fa1.chunk.js.map": "/need-for-drive/static/js/2.e7035fa1.chunk.js.map",
     "index.html": "/need-for-drive/index.html",
-    "static/css/main.011c8b85.chunk.css.map": "/need-for-drive/static/css/main.011c8b85.chunk.css.map",
-    "static/js/2.214e56d1.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.214e56d1.chunk.js.LICENSE.txt",
+    "static/css/main.8116998a.chunk.css.map": "/need-for-drive/static/css/main.8116998a.chunk.css.map",
+    "static/js/2.e7035fa1.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.e7035fa1.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/need-for-drive/static/media/cursor.e525f3f1.svg",
     "static/media/facebook.01c0ca6a.svg": "/need-for-drive/static/media/facebook.01c0ca6a.svg",
     "static/media/instagram.5e14e95a.svg": "/need-for-drive/static/media/instagram.5e14e95a.svg",
@@ -18,7 +18,6 @@
     "static/media/map.480be180.svg": "/need-for-drive/static/media/map.480be180.svg",
     "static/media/menu_btn.33a03786.svg": "/need-for-drive/static/media/menu_btn.33a03786.svg",
     "static/media/menu_close.1d4598cc.svg": "/need-for-drive/static/media/menu_close.1d4598cc.svg",
-    "static/media/OrderPage.scss": "/need-for-drive/static/media/next.ce81e742.svg",
     "static/media/Sidebar.scss": "/need-for-drive/static/media/pointer.ffdfd958.svg",
     "static/media/right-arrow.7591c327.svg": "/need-for-drive/static/media/right-arrow.7591c327.svg",
     "static/media/slider-card1.024ae8f2.jpg": "/need-for-drive/static/media/slider-card1.024ae8f2.jpg",
@@ -29,8 +28,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.1e5b2fd7.js",
-    "static/js/2.214e56d1.chunk.js",
-    "static/css/main.011c8b85.chunk.css",
-    "static/js/main.3d32d1fc.chunk.js"
+    "static/js/2.e7035fa1.chunk.js",
+    "static/css/main.8116998a.chunk.css",
+    "static/js/main.70b247cf.chunk.js"
   ]
 }
