@@ -29,8 +29,8 @@
     background: linear-gradient(90deg, #076432 2.61%, #013C27 112.6%);
   }
 
-  &.button_color-disabled {
-    background: #EEEEEE;
+  &:disabled {
+    background: $grayLightColor;
   }
 
   &.button_color-green {

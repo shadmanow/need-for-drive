@@ -36,8 +36,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     user-select: none;
-    cursor: url("../../assets/images/svg/pointer.svg"), pointer;
 
     &:hover {
       background-color: rgba(14, 194, 97, 0.2);
