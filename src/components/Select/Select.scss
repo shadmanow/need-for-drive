@@ -1,0 +1,51 @@
+@import "../../assets/styles/var";
+
+.select {
+  position: relative;
+
+  &__label {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    margin-right: 5px;
+  }
+
+  &__input {
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    color: $blackColor;
+    outline: none;
+    padding: 3px 0 3px 8px;
+    border: none;
+    border-bottom: 1px solid $grayDarkColor;
+    width: 224px;
+
+    &::placeholder {
+      font-family: Roboto, sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__clear-icon {
+    cursor: url("../../assets/images/svg/pointer.svg"), pointer;
+    position: absolute;
+    box-sizing: initial;
+    width: 8px;
+    height: 8px;
+    padding: 2px 2px 6px 15px;
+    right: 6px;
+    bottom: 0;
+
+    &:hover path {
+      fill: $greenColor;
+    }
+  }
+}

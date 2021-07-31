@@ -1,0 +1,44 @@
+@import "../../assets/styles/var";
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  overflow: hidden;
+  height: 0;
+  width: 224px;
+
+  &::-webkit-scrollbar {
+    background: white;
+    border: 1px solid $grayLightColor;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $grayDarkColor;
+    border-radius: 2px;
+  }
+
+  &.dropdown_opened {
+    padding: 4px 8px;
+    overflow-y: auto;
+    height: 106px;
+    background: white;
+    border: 1px solid $grayLightColor;
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item {
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    color: $grayDarkColor;
+    margin-bottom: 4px;
+
+    &:hover {
+      color: $greenColor;
+    }
+  }
+}

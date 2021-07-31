@@ -31,6 +31,10 @@
 
   &:disabled {
     background: $grayLightColor;
+
+    &:hover {
+      background: $grayLightColor;
+    }
   }
 
   &.button_color-green {

@@ -35,8 +35,8 @@ export const Sidebar = () => {
       <div className="sidebar__wrapper">
         <nav>
           <ul className="nav-list">
-            {links.map((link) => (
-              <li className="nav-list__item">
+            {links.map((link, index) => (
+              <li className="nav-list__item" key={index}>
                 <Link className="nav-link nav-link_color-gray" to={link.to}>
                   {link.name}
                 </Link>
