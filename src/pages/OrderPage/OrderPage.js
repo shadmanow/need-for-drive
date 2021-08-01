@@ -7,11 +7,13 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import { Order } from '../../components/Order/Order'
 import { Breadcrumbs } from '../../components/Breadcrumbs/Breadcrumbs'
 import { ChoiceLocationForm } from '../ChoiceLocationForm/ChoiceLocationForm'
+import { ChoiceModelForm } from '../ChoiceModelForm/ChoiceModelForm'
 
 const OrderPage = () => {
   const [order, setOrder] = useState({
     city: '',
     point: '',
+    model: '30N1',
   })
 
   const onFormChange = (value) => setOrder({ ...order, ...value })
@@ -33,11 +35,14 @@ const OrderPage = () => {
                 onChange={onFormChange}
               />
             </Route>
+            <Route path="/order/model">
+              <ChoiceModelForm model={order.model} />
+            </Route>
           </Switch>
         </div>
 
         <section className="order-page__order-wrapper">
-          <Order />
+          <Order model={order.model} />
         </section>
       </main>
     </div>

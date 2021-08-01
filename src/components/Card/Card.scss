@@ -1,0 +1,40 @@
+@import "../../assets/styles/var";
+
+.card {
+	position: relative;
+	width: 370px;
+	height: 224px;
+	padding: 16px;
+	border: 1px solid $grayLightColor;
+
+	&.card_selected {
+		border: 1px solid $greenColor;
+	}
+
+	&:hover {
+		border: 1px solid $grayDarkColor;
+	}
+
+	&__title {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 21px;
+		color: $blackColor;
+	}
+
+	&__subtitle {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 16px;
+		color: $grayDarkColor;
+	}
+
+	&__img {
+		bottom: 16px;
+		right: 16px;
+		position: absolute;
+		width: 256px;
+		height: 116px;
+		object-fit: cover;
+	}
+}

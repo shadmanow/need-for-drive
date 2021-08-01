@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './Pagination.scss'
+import './CirclePagination.scss'
 
 const CircleList = ({ curIndex, count }) => {
   const circles = []
@@ -7,8 +7,8 @@ const CircleList = ({ curIndex, count }) => {
     circles.push(
       <div
         key={i}
-        className={`pagination__circle ${
-          curIndex === i ? 'pagination__circle_active' : ''
+        className={`circle-pagination__circle ${
+          curIndex === i ? 'circle-pagination__circle_active' : ''
         }`}
       />
     )
@@ -16,7 +16,7 @@ const CircleList = ({ curIndex, count }) => {
   return circles
 }
 
-const Pagination = ({ count, curIndex }) => {
+const CirclePagination = ({ count, curIndex }) => {
   const [index, setIndex] = useState(curIndex)
 
   useEffect(() => {
@@ -24,10 +24,10 @@ const Pagination = ({ count, curIndex }) => {
   }, [curIndex])
 
   return (
-    <div className="pagination">
+    <div className="circle-pagination">
       <CircleList curIndex={index} count={count} />
     </div>
   )
 }
 
-export { Pagination }
+export { CirclePagination }

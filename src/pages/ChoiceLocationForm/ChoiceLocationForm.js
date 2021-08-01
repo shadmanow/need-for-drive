@@ -19,7 +19,7 @@ const ChoiceLocationForm = ({ city, point, onChange }) => {
 
   return (
     <form className="choice-location-form">
-      <div className="choice-location-form__wrapper">
+      <section className="choice-location-form__wrapper">
         <Select
           label="Город"
           placeholder="Начните вводить город..."
@@ -35,7 +35,7 @@ const ChoiceLocationForm = ({ city, point, onChange }) => {
           disabled={!points.length}
           onChange={(point) => onChange({ point })}
         />
-      </div>
+      </section>
       <Map label="Выбрать на карте" />
     </form>
   )

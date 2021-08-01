@@ -1,16 +1,18 @@
-.pagination {
+@import "../../assets/styles/var";
+
+.circle-pagination {
   display: flex;
 
   &__circle {
     border-radius: 50%;
     width: 8px;
     height: 8px;
-    background: #EEEEEE;
+    background: $grayLightColor;
     margin-right: 8px;
   }
 
   &__circle_active {
-    background: #0EC261;
+    background: $greenColor;
   }
 
   &:last-child {
