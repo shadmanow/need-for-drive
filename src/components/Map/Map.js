@@ -26,4 +26,4 @@ const Map = ({ label }) => {
   )
 }
 
-export { Map }
+export default Map

@@ -23,16 +23,14 @@
     margin: 0 16px;
   }
 
-  :last-child::after{
-    content: '';
+  :last-child::after {
+    content: "";
     margin: 0;
   }
 }
 
-/* Adaptive */
-
 .breadcrumbs {
-@media screen and (max-width: $desktopSize - 1) {
+  @media screen and (max-width: $desktopSize - 1) {
     padding: 8px 0px 8px 32px;
   }
 
@@ -47,8 +45,8 @@
       margin: 0 5px;
     }
 
-    :last-child::after{
-      content: '';
+    :last-child::after {
+      content: "";
       margin: 0;
     }
   }

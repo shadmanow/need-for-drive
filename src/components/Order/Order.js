@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './Order.scss'
-import { Button } from '../Button/Button'
+import Button from '../Button/Button'
 
 const Order = () => {
   return (
@@ -21,4 +21,4 @@ const Order = () => {
   )
 }
 
-export { Order }
+export default Order

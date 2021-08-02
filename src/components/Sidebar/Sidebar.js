@@ -10,7 +10,7 @@ import { ReactComponent as Instagram } from '../../assets/images/svg/instagram.s
 import { ReactComponent as Facebook } from '../../assets/images/svg/facebook.svg'
 import { ReactComponent as Telegram } from '../../assets/images/svg/telegram.svg'
 
-export const Sidebar = () => {
+const Sidebar = () => {
   const [language, setLanguage] = useState('Eng')
   const [isOpen, setIsOpen] = useState(false)
   const classes = cn('sidebar', { sidebar__opened: isOpen })
@@ -36,7 +36,7 @@ export const Sidebar = () => {
         <nav>
           <ul className="nav-list">
             {links.map((link, index) => (
-              <li className="nav-list__item" key={index}>
+              <li className="nav-list__item" key={`${link.name}-${index}`}>
                 <Link className="nav-link nav-link_color-gray" to={link.to}>
                   {link.name}
                 </Link>
@@ -69,3 +69,5 @@ export const Sidebar = () => {
     </aside>
   )
 }
+
+export default Sidebar
