@@ -48,4 +48,4 @@ const Map = ({ label, center, markers }) => {
   )
 }
 
-export { Map }
+export default Map

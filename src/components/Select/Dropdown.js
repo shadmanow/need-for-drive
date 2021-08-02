@@ -47,4 +47,4 @@ const Dropdown = ({ isOpen, items, scrollTo, onSelect }) => {
   )
 }
 
-export { Dropdown }
+export default Dropdown

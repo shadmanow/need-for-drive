@@ -30,4 +30,4 @@ const Pagination = ({ count, curIndex }) => {
   )
 }
 
-export { Pagination }
+export default Pagination

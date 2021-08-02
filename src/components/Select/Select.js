@@ -3,7 +3,7 @@ import cn from 'classnames'
 
 import './Select.scss'
 import { ReactComponent as ClearIcon } from '../../assets/images/svg/close.svg'
-import { Dropdown } from './Dropdown'
+import Dropdown from './Dropdown'
 
 const Select = ({ label, placeholder, onSelect, items = [], disabled }) => {
   const [value, setValue] = useState('')
@@ -69,7 +69,6 @@ const Select = ({ label, placeholder, onSelect, items = [], disabled }) => {
   return (
     <div className="select">
       {label && <label className="select__label">{label}</label>}
-
       <input
         className={inputClasses}
         type="text"
@@ -93,4 +92,4 @@ const Select = ({ label, placeholder, onSelect, items = [], disabled }) => {
   )
 }
 
-export { Select }
+export default Select

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 import './ChoiceLocationForm.scss'
-import { Select } from '../../components/Select/Select'
-import { Map } from '../../components/Map/Map'
+import Select from '../../components/Select/Select'
+import Map from '../../components/Map/Map'
 import { useApi } from '../../hooks/useApi'
 import { useMapQuestApi } from '../../hooks/useMapQuestApi'
 
@@ -74,4 +74,4 @@ const ChoiceLocationForm = ({ city, point, onChange }) => {
   )
 }
 
-export { ChoiceLocationForm }
+export default ChoiceLocationForm
