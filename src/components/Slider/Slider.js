@@ -4,8 +4,8 @@ import './Slider.scss'
 import { sliderItems } from './SliderItems'
 import leftArrow from '../../assets/images/svg/left-arrow.svg'
 import rightArrow from '../../assets/images/svg/right-arrow.svg'
-import { Pagination } from './Pagination'
-import { Button } from '../Button/Button'
+import Pagination from './Pagination'
+import Button from '../Button/Button'
 
 const Slider = () => {
   const [items, setItems] = useState([])
@@ -67,4 +67,4 @@ const Slider = () => {
   )
 }
 
-export { Slider }
+export default Slider

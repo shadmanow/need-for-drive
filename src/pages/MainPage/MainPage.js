@@ -1,13 +1,16 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import './MainPage.scss'
-import { Footer } from '../../components/Footer/Footer'
-import { Button } from '../../components/Button/Button'
-import { Slider } from '../../components/Slider/Slider'
-import { Header } from '../../components/Header/Header'
-import { Sidebar } from '../../components/Sidebar/Sidebar'
+import Footer from '../../components/Footer/Footer'
+import Button from '../../components/Button/Button'
+import Slider from '../../components/Slider/Slider'
+import Header from '../../components/Header/Header'
+import Sidebar from '../../components/Sidebar/Sidebar'
 
 const MainPage = () => {
+  const history = useHistory()
+  const onClickButton = () => history.push('/order')
   return (
     <div className="main-page">
       <Sidebar />
@@ -27,7 +30,11 @@ const MainPage = () => {
             <p className="main-page__subtitle">
               Поминутная аренда авто твоего города
             </p>
-            <Button className="main-page__button" value="Забронировать" />
+            <Button
+              className="main-page__button"
+              value="Забронировать"
+              onClick={onClickButton}
+            />
           </section>
           <Footer />
         </article>
@@ -40,4 +47,4 @@ const MainPage = () => {
   )
 }
 
-export { MainPage }
+export default MainPage
