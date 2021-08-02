@@ -1,67 +1,92 @@
 import React, { useState, useEffect } from 'react'
+import cn from 'classnames'
 
 import './Select.scss'
-import { ReactComponent as Remove } from '../../assets/images/svg/close.svg'
+import { ReactComponent as ClearIcon } from '../../assets/images/svg/close.svg'
 import { Dropdown } from './Dropdown'
 
-const Select = ({
-  label,
-  value,
-  placeholder,
-  onChange,
-  items,
-  disabled = false,
-}) => {
-  const [_items, _setItems] = useState([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [isChanged, setIsChanged] = useState(false)
+const Select = ({ label, placeholder, onSelect, items = [], disabled }) => {
+  const [value, setValue] = useState('')
+  const [open, setOpen] = useState(false)
+  const [changed, setChanged] = useState(false)
+  const [error, setError] = useState(false)
+  const [success, setSuccess] = useState(false)
   const [scrollTo, setScrollTo] = useState(0)
 
-  useEffect(() => _setItems(items.sort()), [items])
+  const inputClasses = cn('select__input', {
+    select__input_error: error,
+    select__input_success: success,
+  })
 
   useEffect(() => {
-    setIsOpen(value.length >= 2 && isChanged)
-  }, [value, isChanged])
-
-  useEffect(() => {
-    if (isOpen) {
-      const itemIndex = _items.findIndex((item) => item[0] === value[0])
-      if (itemIndex >= 0) setScrollTo(itemIndex)
+    if (value.length >= 2 && changed) {
+      setOpen(true)
+      const index = items.findIndex((item) => item.startsWith(value))
+      if (index >= 0) setScrollTo(index)
     }
-  }, [isOpen, _items, value])
+  }, [value])
 
-  const onValueChange = (e) => {
-    setIsChanged(true)
-    onChange(e.target.value)
+  useEffect(() => {
+    if (value) {
+      const timeout = setTimeout(() => {
+        const item = items.find((item) => item === value)
+        if (item) {
+          setSuccess(true)
+          setError(false)
+          onSelect(item)
+        } else {
+          setSuccess(false)
+          setError(true)
+        }
+      }, 600)
+      return () => clearTimeout(timeout)
+    }
+  }, [value])
+
+  const onChangeValue = (e) => {
+    setChanged(true)
+    setSuccess(false)
+    setError(false)
+    setValue(e.target.value)
   }
 
-  const onValueSelect = (i) => {
-    setIsChanged(false)
-    setIsOpen(false)
-    onChange(_items[i])
+  const onSelectValue = (i) => {
+    setChanged(false)
+    setOpen(false)
+    setValue(items[i])
+    onSelect(items[i])
+  }
+
+  const onClear = () => {
+    setChanged(false)
+    setOpen(false)
+    setSuccess(false)
+    setError(false)
+    setValue('')
+    onSelect('')
   }
 
   return (
-    <div className="select" tabIndex="0">
+    <div className="select">
       {label && <label className="select__label">{label}</label>}
 
       <input
-        className="select__input"
+        className={inputClasses}
         type="text"
         value={value}
         placeholder={placeholder}
-        onChange={onValueChange}
+        onChange={onChangeValue}
         disabled={disabled}
       />
 
       {value.length ? (
-        <Remove className="select__clear-icon" onClick={() => onChange('')} />
+        <ClearIcon className="select__clear-icon" onClick={onClear} />
       ) : null}
 
       <Dropdown
-        isOpen={isOpen}
-        items={_items}
-        onClick={onValueSelect}
+        isOpen={open}
+        items={items}
+        onSelect={onSelectValue}
         scrollTo={scrollTo}
       />
     </div>

@@ -32,6 +32,14 @@
     &:focus {
       outline: none;
     }
+
+    &.select__input_error {
+      border-bottom: 1px solid crimson;
+    }
+
+    &.select__input_success {
+      border-bottom: 1px solid $greenColor;
+    }
   }
 
   &__clear-icon {
