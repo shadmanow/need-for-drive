@@ -6,7 +6,17 @@ import Radio from '../../components/Radio/Radio'
 import Card from '../../components/Card/Card'
 import ButtonPagination from './ButtonPagination'
 
+const items = [
+  { id: 'ab1', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+  { id: 'ab2', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+  { id: 'ab3', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+  { id: 'ab4', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+  { id: 'ab5', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+  { id: 'ab6', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
+]
+
 const ChoiceModelForm = ({ model }) => {
+  const [curModel, setCurModel] = useState(null)
   const [models, setModels] = useState([])
   const [sort, setSort] = useState('Все модели')
 
@@ -37,12 +47,16 @@ const ChoiceModelForm = ({ model }) => {
         />
       </section>
       <section className="choice-model-form__cards-wrapper">
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
-        <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
+        {items.map((item) => (
+          <Card
+            key={item.id}
+            title={item.name}
+            subtitle={item.price}
+            img={item.img}
+            selected={curModel && curModel.id === item.id}
+            onClick={() => setCurModel(item)}
+          />
+        ))}
       </section>
       <ButtonPagination countPages={10} onClick={() => {}} />
     </form>
