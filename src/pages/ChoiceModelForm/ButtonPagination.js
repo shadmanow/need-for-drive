@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Button } from '../../components/Button/Button'
+import Button from '../../components/Button/Button'
 import './ButtonPagination.scss'
 
 const ButtonPagination = ({ countPages, onClick }) => {

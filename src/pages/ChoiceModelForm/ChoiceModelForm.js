@@ -49,4 +49,4 @@ const ChoiceModelForm = ({ model }) => {
   )
 }
 
-export { ChoiceModelForm }
+export default ChoiceModelForm
