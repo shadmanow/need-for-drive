@@ -2,7 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 import './Order.scss'
-import { Button } from '../Button/Button'
+import Button from '../Button/Button'
 
 const Order = ({ city, point, model }) => {
   const { pathname } = useLocation()
@@ -39,4 +39,4 @@ const Order = ({ city, point, model }) => {
   )
 }
 
-export { Order }
+export default Order

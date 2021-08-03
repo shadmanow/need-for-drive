@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
 import './Slider.scss'
-import { sliderItems } from './SliderItems'
 import leftArrow from '../../assets/images/svg/left-arrow.svg'
 import rightArrow from '../../assets/images/svg/right-arrow.svg'
-import { CirclePagination } from './CirclePagination'
-import { Button } from '../Button/Button'
+import CirclePagination from './CirclePagination'
+import Button from '../Button/Button'
+import { sliderItems } from './SliderItems'
 
 const Slider = () => {
   const [items, setItems] = useState([])
@@ -67,4 +67,4 @@ const Slider = () => {
   )
 }
 
-export { Slider }
+export default Slider

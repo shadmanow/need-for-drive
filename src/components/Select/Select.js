@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import './Select.scss'
 import { ReactComponent as Remove } from '../../assets/images/svg/close.svg'
-import { Dropdown } from './Dropdown'
+import Dropdown from './Dropdown'
 
 const Select = ({
   label,
@@ -44,7 +44,6 @@ const Select = ({
   return (
     <div className="select" tabIndex="0">
       {label && <label className="select__label">{label}</label>}
-
       <input
         className="select__input"
         type="text"
@@ -54,9 +53,9 @@ const Select = ({
         disabled={disabled}
       />
 
-      {value.length ? (
+      {!!value.length && (
         <Remove className="select__clear-icon" onClick={() => onChange('')} />
-      ) : null}
+      )}
 
       <Dropdown
         isOpen={isOpen}
@@ -68,4 +67,4 @@ const Select = ({
   )
 }
 
-export { Select }
+export default Select

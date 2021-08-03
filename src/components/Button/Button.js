@@ -11,4 +11,4 @@ const Button = ({ value, color = 'default', disabled, className, onClick }) => {
   )
 }
 
-export { Button }
+export default Button

@@ -36,4 +36,4 @@ const Dropdown = ({ isOpen, items, scrollTo, onClick }) => {
   )
 }
 
-export { Dropdown }
+export default Dropdown

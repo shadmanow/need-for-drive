@@ -4,7 +4,6 @@
   position: relative;
 
   &__label {
-    font-style: normal;
     font-weight: 300;
     font-size: 14px;
     line-height: 16px;
@@ -23,7 +22,6 @@
     width: 224px;
 
     &::placeholder {
-      font-family: Roboto, sans-serif;
       font-weight: 300;
       font-size: 14px;
       line-height: 16px;

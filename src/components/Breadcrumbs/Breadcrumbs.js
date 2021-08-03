@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
     <section className="breadcrumbs">
       {links.map((link, index) => (
         <NavLink
-          key={index}
+          key={`${link.name}-${index}`}
           className="breadcrumbs__link"
           activeClassName="breadcrumbs__link_active"
           to={link.to}
@@ -21,4 +21,4 @@ const Breadcrumbs = () => {
   )
 }
 
-export { Breadcrumbs }
+export default Breadcrumbs

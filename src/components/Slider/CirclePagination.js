@@ -30,4 +30,4 @@ const CirclePagination = ({ count, curIndex }) => {
   )
 }
 
-export { CirclePagination }
+export default CirclePagination
