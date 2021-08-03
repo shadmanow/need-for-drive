@@ -11,9 +11,9 @@ import ChoiceModelForm from '../ChoiceModelForm/ChoiceModelForm'
 
 const OrderPage = () => {
   const [order, setOrder] = useState({
-    city: '',
-    point: '',
-    model: '30N1',
+    city: 'Самара',
+    point: 'Космопорт',
+    model: 'Космический корабль',
   })
 
   const onFormChange = (value) => setOrder({ ...order, ...value })
@@ -42,7 +42,7 @@ const OrderPage = () => {
         </section>
 
         <section className="order-page__order-wrapper">
-          <Order model={order.model} />
+          <Order order={order} />
         </section>
       </main>
     </div>

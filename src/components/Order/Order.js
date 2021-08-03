@@ -4,16 +4,19 @@ import { useLocation } from 'react-router-dom'
 import './Order.scss'
 import Button from '../Button/Button'
 
-const Order = ({ city, point, model }) => {
+const Order = ({ order }) => {
+  const { city, point, model } = order
   const { pathname } = useLocation()
   return (
     <section className="order">
       <h2 className="order__title">Ваш заказ:</h2>
+
       <p className="order__item">
         <span>Пункт выдачи</span>
         <span />
         <span>
-          {city}, {point}
+          {city},<br />
+          {point}
         </span>
       </p>
 
@@ -29,6 +32,7 @@ const Order = ({ city, point, model }) => {
         <strong>Цена: </strong>
         <span>от 8 000 до 12 000 ₽</span>
       </p>
+
       {pathname === '/order/location' && (
         <Button value="Выбрать модель" disabled={!city && !point} />
       )}

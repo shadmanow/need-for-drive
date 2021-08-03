@@ -44,7 +44,7 @@ const ChoiceModelForm = ({ model }) => {
         <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
         <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
       </section>
-      <ButtonPagination countPages={10} />
+      <ButtonPagination countPages={10} onClick={() => {}} />
     </form>
   )
 }
