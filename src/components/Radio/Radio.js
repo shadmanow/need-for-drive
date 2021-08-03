@@ -19,4 +19,4 @@ const Radio = ({ label, value, checked, onClick }) => {
   )
 }
 
-export { Radio }
+export default Radio

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import './ChoiceModelForm.scss'
 import car1 from '../../assets/images/car1.png'
-import { Radio } from '../../components/Radio/Radio'
-import { Card } from '../../components/Card/Card'
-import { ButtonPagination } from './ButtonPagination'
+import Radio from '../../components/Radio/Radio'
+import Card from '../../components/Card/Card'
+import ButtonPagination from './ButtonPagination'
 
 const ChoiceModelForm = ({ model }) => {
   const [models, setModels] = useState([])
@@ -36,7 +36,7 @@ const ChoiceModelForm = ({ model }) => {
           onClick={onSortValueChange}
         />
       </section>
-      <section className="choice-model-form__card-wrapper">
+      <section className="choice-model-form__cards-wrapper">
         <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
         <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />
         <Card title="ELANTRA" subtitle="12 000 - 25 000 ₽" img={car1} />

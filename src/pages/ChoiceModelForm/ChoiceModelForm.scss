@@ -19,7 +19,7 @@
 		}
 	}
 
-	&__card-wrapper {
+	&__cards-wrapper {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 
@@ -49,22 +49,22 @@
 /* Adaptive */
 .choice-model-form {
 	@media screen and (max-width: $desktopSize - 1) {
-		&__card-wrapper {
+		&__cards-wrapper {
 			grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
 		}
 	}
 
 	@media screen and (max-width: $desktopMinSize - 1) {
-		&__card-wrapper {
+		&__cards-wrapper {
 			grid-template-columns: 1fr 1fr;
 		}
 	}
 
 	@media screen and (max-width: $tabletSize - 1) {
-		&__card-wrapper {
+		&__cards-wrapper {
 			height: 400px;
 			grid-template-columns: 1fr;
-			overflow: auto;
+			overflow-y: auto;
 		}
 	}
 }

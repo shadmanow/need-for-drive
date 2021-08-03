@@ -32,4 +32,4 @@ const ButtonPagination = ({ countPages, onClick }) => {
   )
 }
 
-export { ButtonPagination }
+export default ButtonPagination
