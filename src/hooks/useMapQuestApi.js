@@ -19,6 +19,7 @@ function useMapQuestApi() {
       const { latLng } = locations.filter(
         (location) => location.adminArea1 === 'RU'
       )[0]
+
       return latLng
     } catch (e) {
       console.error(e)
@@ -40,9 +41,17 @@ function useMapQuestApi() {
       }
 
       const { results } = await response.json()
-      const locations = results.map((result) => result.locations[0])
-      const latLngArray = locations.map((location) => location.latLng)
-      return latLngArray
+
+      const locations = results.map((result) => {
+        const { locations, providedLocation } = result
+        const { lat, lng } = locations[0].latLng
+        const { location } = providedLocation
+        const street = location.substr(location.indexOf(',') + 1)
+
+        return { city, street, lat, lng }
+      })
+
+      return locations
     } catch (e) {
       console.error(e)
     }

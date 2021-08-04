@@ -3,7 +3,7 @@ import DG from '2gis-maps'
 
 import './Map.scss'
 
-const Map = ({ label, center, markers }) => {
+const Map = ({ label, center, markers, onMarkerClick }) => {
   const [map, setMap] = useState(null)
   const [curMarkers, setCurMarkers] = useState([])
   const mapRef = useRef()
@@ -12,7 +12,7 @@ const Map = ({ label, center, markers }) => {
     if (mapRef.current) {
       const map = DG.map(mapRef.current, {
         center,
-        zoom: 12,
+        zoom: 11,
         fullscreenControl: false,
       })
       setMap(map)
@@ -21,18 +21,19 @@ const Map = ({ label, center, markers }) => {
 
   useEffect(() => {
     if (map) {
-      map.setView(DG.latLng(center.lat, center.lng), 10)
+      map.setView([center.lat, center.lng], center.zoom ? center.zoom : 11)
     }
   }, [center])
 
   useEffect(() => {
-    if (map) {
+    if (map && markers && markers.length) {
       for (const marker of curMarkers) {
         marker.removeFrom(map)
       }
       const newMarkers = []
       for (const marker of markers) {
         const newMarker = DG.marker([marker.lat, marker.lng])
+        newMarker.on('click', () => onMarkerClick(marker))
         newMarkers.push(newMarker)
         newMarker.addTo(map)
       }

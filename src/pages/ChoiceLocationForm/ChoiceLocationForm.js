@@ -8,68 +8,82 @@ import { useMapQuestApi } from '../../hooks/useMapQuestApi'
 
 const ChoiceLocationForm = ({ city, point, onChange }) => {
   const [points, setPoints] = useState([])
-  const [selectCities, setSelectCities] = useState([])
-  const [selectPoints, setSelectPoints] = useState([])
+  const [selectablePoints, setSelectablePoints] = useState([])
+  const [selectableCities, setSelectableCities] = useState([])
 
   const [mapCenter, setMapCenter] = useState({ lat: 54.314192, lng: 48.403132 })
-  const [markers, setMarkers] = useState([])
+  const [mapMarkers, setMarkers] = useState([])
 
   const { get } = useApi()
   const { getCity, getStreets } = useMapQuestApi()
 
   useEffect(() => {
     get('/db/city')
-      .then(({ data }) => setSelectCities(data))
-      .catch((err) => console.error(err))
+      .then(({ data }) => setSelectableCities(data))
+      .catch((error) => console.error(error))
 
     get('/db/point')
       .then(({ data }) => setPoints(data))
-      .catch((err) => console.error(err))
-  }, [get])
+      .catch((error) => console.error(error))
+  }, [])
 
   useEffect(() => {
-    if (city) {
+    if (city && points.length) {
+      const selectedCity = selectableCities.find(({ name }) => name === city)
+      const selectablePoints = points.filter(
+        ({ cityId }) => cityId && cityId.id === selectedCity.id
+      )
+      setSelectablePoints(selectablePoints)
+
       getCity(city)
         .then(({ lat, lng }) => setMapCenter({ lat, lng }))
-        .catch((err) => console.error(err))
-
-      const cityItem = selectCities.find((item) => item.name === city)
-      const curPoints = points.filter(
-        ({ cityId }) => cityId && cityId.id === cityItem.id
-      )
-
-      setSelectPoints(curPoints)
-      console.log(curPoints.map((point) => point.address))
-
-      getStreets(
-        city,
-        curPoints.map((point) => point.address)
-      )
-        .then((latLngArray) => setMarkers(latLngArray))
-        .catch((err) => console.error(err))
+        .catch((error) => console.error(error))
     }
-  }, [city])
+  }, [city, points])
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (selectablePoints.length) {
+      const streets = selectablePoints.map(({ address }) => address)
+      getStreets(city, streets)
+        .then((locations) => setMarkers(locations))
+        .catch((error) => console.error(error))
+    }
+  }, [selectablePoints])
+
+  const onPointSelect = (point) => {
+    onChange({ point })
+    const marker = mapMarkers.find(({ street }) => street === point)
+    if (marker) {
+      const { lat, lng } = marker
+      setMapCenter({ lat, lng, zoom: 15 })
+    }
+  }
 
   return (
     <form className="choice-location-form">
-      <div className="choice-location-form__wrapper">
+      <section className="choice-location-form__wrapper">
         <Select
           label="Город"
+          value={city}
           placeholder="Начните вводить город..."
-          items={selectCities.map((city) => city.name)}
-          onSelect={(city) => onChange({ city })}
+          items={selectableCities.map(({ name }) => name)}
+          onSelect={(city) => onChange({ city, point: '' })}
         />
         <Select
           label="Пункт выдачи"
+          value={point}
           placeholder="Начните вводить пункт..."
-          items={selectPoints.map((point) => `${point.name} ${point.address}`)}
-          disabled={!selectPoints.length}
-          onSelect={(point) => onChange({ point })}
+          items={selectablePoints.map(({ address }) => address)}
+          onSelect={onPointSelect}
+          disabled={!selectablePoints.length}
         />
-      </div>
-      <Map label="Выбрать на карте" center={mapCenter} markers={markers} />
+      </section>
+      <Map
+        label="Выбрать на карте"
+        center={mapCenter}
+        markers={mapMarkers}
+        onMarkerClick={({ street }) => onChange({ point: street })}
+      />
     </form>
   )
 }

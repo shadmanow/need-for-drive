@@ -1,86 +1,76 @@
 import React, { useState, useEffect } from 'react'
-import cn from 'classnames'
 
 import './Select.scss'
 import { ReactComponent as ClearIcon } from '../../assets/images/svg/close.svg'
 import Dropdown from './Dropdown'
 
-const Select = ({ label, placeholder, onSelect, items = [], disabled }) => {
-  const [value, setValue] = useState('')
+const Select = ({
+  value,
+  label,
+  placeholder,
+  onSelect,
+  items = [],
+  disabled,
+}) => {
+  const [curValue, setCurValue] = useState('')
   const [open, setOpen] = useState(false)
   const [changed, setChanged] = useState(false)
-  const [error, setError] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [scrollTo, setScrollTo] = useState(0)
 
-  const inputClasses = cn('select__input', {
-    select__input_error: error,
-    select__input_success: success,
-  })
+  useEffect(() => setCurValue(value), [value])
 
   useEffect(() => {
-    if (value.length >= 2 && changed) {
-      setOpen(true)
+    if (curValue.length >= 2 && changed) {
+      if (!open) setOpen(true)
+
       const index = items.findIndex((item) => item.startsWith(value))
       if (index >= 0) setScrollTo(index)
     }
-  }, [value])
-
-  useEffect(() => {
-    if (value) {
-      const timeout = setTimeout(() => {
-        const item = items.find((item) => item === value)
-        if (item) {
-          setSuccess(true)
-          setError(false)
-          onSelect(item)
-        } else {
-          setSuccess(false)
-          setError(true)
-        }
-      }, 600)
-      return () => clearTimeout(timeout)
-    }
-  }, [value])
+  }, [curValue])
 
   const onChangeValue = (e) => {
-    setChanged(true)
-    setSuccess(false)
-    setError(false)
-    setValue(e.target.value)
+    if (!changed) setChanged(true)
+    setCurValue(e.target.value)
   }
 
   const onSelectValue = (i) => {
     setChanged(false)
     setOpen(false)
-    setValue(items[i])
+    setCurValue(items[i])
     onSelect(items[i])
   }
 
   const onClear = () => {
     setChanged(false)
     setOpen(false)
-    setSuccess(false)
-    setError(false)
-    setValue('')
+    setCurValue('')
     onSelect('')
+  }
+
+  const onBlur = () => {
+    const timeout = setTimeout(() => {
+      setChanged(false)
+      setOpen(false)
+    }, 200)
+    return () => clearTimeout(timeout)
   }
 
   return (
     <div className="select">
       {label && <label className="select__label">{label}</label>}
       <input
-        className={inputClasses}
+        className="select__input"
         type="text"
-        value={value}
+        value={curValue}
         placeholder={placeholder}
         onChange={onChangeValue}
         disabled={disabled}
+        onBlur={onBlur}
       />
 
-      {value.length ? (
+      {!!curValue.length && (
         <ClearIcon className="select__clear-icon" onClick={onClear} />
-      ) : null}
+      )}
 
       <Dropdown
         isOpen={open}

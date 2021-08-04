@@ -1,0 +1,61 @@
+@import "../../assets/styles/var";
+
+.radio {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+
+  &__input {
+    display: none;
+  }
+
+  &__label {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    cursor: url("../../assets/images/svg/pointer.svg"), pointer;
+  }
+
+  &__label:before {
+    content: "";
+    display: inline-block;
+    min-width: 12px;
+    min-height: 12px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: 1px solid $grayDarkColor;
+  }
+
+  &__input:checked + label:before {
+    content: "";
+    display: inline-block;
+    min-width: 12px;
+    min-height: 12px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: 0.2rem solid $greenColor;
+  }
+
+  &__label:hover:before {
+    content: "";
+    display: inline-block;
+    min-width: 12px;
+    min-height: 12px;
+    margin-right: 8px;
+    border-radius: 50%;
+    opacity: 0.7;
+    border: 2px solid $greenColor;
+  }
+
+  &__input:checked + label {
+    color: $blackColor;
+  }
+
+  &__input:not(:checked) + label {
+    color: $grayDarkColor;
+  }
+
+  &__input:not(:checked) + label:hover {
+    color: $blackColor;
+  }
+}

@@ -13,12 +13,12 @@
     margin-bottom: 26px;
   }
 
-  &__point {
+  &__item {
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(91px, 91px) 1fr minmax(101px, 101px);
+    grid-template-columns: auto 1fr auto;
     grid-column-gap: 12px;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     align-items: end;
 
     :nth-child(2) {
@@ -48,11 +48,16 @@
     font-size: 16px;
     line-height: 16px;
     color: $blackColor;
+    margin-top: 16px;
     margin-bottom: 32px;
 
     :last-child {
       font-weight: 400;
     }
+  }
+
+  .button {
+    width: 100%;
   }
 }
 
