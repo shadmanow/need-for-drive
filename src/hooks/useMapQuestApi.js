@@ -28,10 +28,10 @@ function useMapQuestApi() {
 
   const getStreets = useCallback(async (city, streets) => {
     try {
-      let url = `http://www.mapquestapi.com/geocoding/v1/batch?key=${API_KEY}`
+      let url = `${API_URL}/batch?key=${API_KEY}`
 
-      for (let i = 0; i < streets.length; i++) {
-        url += `&location=${city},${streets[i]}`
+      for (const street of streets) {
+        url += `&location=${city},${street}`
       }
 
       const response = await fetch(url)
