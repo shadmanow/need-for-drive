@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
 import './Slider.scss'
-import { sliderItems } from './SliderItems'
 import leftArrow from '../../assets/images/svg/left-arrow.svg'
 import rightArrow from '../../assets/images/svg/right-arrow.svg'
-import Pagination from './Pagination'
+import CirclePagination from './CirclePagination'
 import Button from '../Button/Button'
+import { sliderItems } from './SliderItems'
 
 const Slider = () => {
   const [items, setItems] = useState([])
@@ -57,7 +57,7 @@ const Slider = () => {
             color={items.length ? items[curItem].color : ''}
           />
         </div>
-        <Pagination count={items.length} curIndex={curItem} />
+        <CirclePagination count={items.length} curIndex={curItem} />
       </div>
 
       <div className="slider__arrow" onClick={() => handleClick(curItem + 1)}>

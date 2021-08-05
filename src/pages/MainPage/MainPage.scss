@@ -51,7 +51,6 @@
 
 /* ADAPTIVE */
 .main-page {
-
   @media screen and (max-width: $desktopSize - 1) {
     &__content {
       grid-template-columns: minmax(549px, 1fr) minmax(410px, 1fr);
@@ -73,9 +72,14 @@
   @media screen and (max-width: $tabletSize - 1) {
     grid-template-columns: 0 1fr;
 
-    &__hero-wrapper, &__slider-wrapper {
-      padding: 0;
+    &__content {
       height: 100vh;
+    }
+
+    &__hero-wrapper,
+    &__slider-wrapper {
+      height: 100vh;
+      padding: 0;
     }
 
     .header {
