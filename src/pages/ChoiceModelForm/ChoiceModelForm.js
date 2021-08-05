@@ -15,10 +15,12 @@ const items = [
   { id: 'ab6', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
 ]
 
+const sortValues = ['Все модели', 'Эконом', 'Премиум']
+
 const ChoiceModelForm = ({ model }) => {
   const [curModel, setCurModel] = useState(null)
   const [models, setModels] = useState([])
-  const [sort, setSort] = useState('Все модели')
+  const [sort, setSort] = useState(sortValues[0])
 
   const onSortValueChange = (value) => {
     setSort(value)
@@ -27,24 +29,15 @@ const ChoiceModelForm = ({ model }) => {
   return (
     <form className="choice-model-form">
       <section className="choice-model-form__radio-wrapper">
-        <Radio
-          label="Все модели"
-          value="Все модели"
-          checked={sort === 'Все модели'}
-          onClick={onSortValueChange}
-        />
-        <Radio
-          label="Эконом"
-          value="Эконом"
-          checked={sort === 'Эконом'}
-          onClick={onSortValueChange}
-        />
-        <Radio
-          label="Премиум"
-          value="Премиум"
-          checked={sort === 'Премиум'}
-          onClick={onSortValueChange}
-        />
+        {sortValues.map((sortValue, index) => (
+          <Radio
+            key={`${sortValue}-${index}`}
+            label={sortValue}
+            value={sortValue}
+            checked={sort === sortValue}
+            onClick={onSortValueChange}
+          />
+        ))}
       </section>
       <section className="choice-model-form__cards-wrapper">
         {items.map((item) => (
@@ -53,6 +46,7 @@ const ChoiceModelForm = ({ model }) => {
             title={item.name}
             subtitle={item.price}
             img={item.img}
+            imgAlt={item.name}
             selected={curModel && curModel.id === item.id}
             onClick={() => setCurModel(item)}
           />
