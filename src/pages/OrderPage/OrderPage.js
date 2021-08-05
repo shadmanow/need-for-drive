@@ -11,9 +11,9 @@ import ChoiceModelForm from '../ChoiceModelForm/ChoiceModelForm'
 
 const OrderPage = () => {
   const [order, setOrder] = useState({
-    city: 'Самара',
-    point: 'Космопорт',
-    model: 'Космический корабль',
+    city: '',
+    point: '',
+    model: '',
   })
 
   const onFormChange = (value) => setOrder({ ...order, ...value })

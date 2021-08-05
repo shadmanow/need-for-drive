@@ -1,66 +1,81 @@
 import React, { useState, useEffect } from 'react'
 
 import './Select.scss'
-import { ReactComponent as Remove } from '../../assets/images/svg/close.svg'
+import { ReactComponent as ClearIcon } from '../../assets/images/svg/close.svg'
 import Dropdown from './Dropdown'
 
 const Select = ({
-  label,
   value,
+  label,
   placeholder,
-  onChange,
-  items,
-  disabled = false,
+  onSelect,
+  items = [],
+  disabled,
 }) => {
-  const [_items, _setItems] = useState([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [isChanged, setIsChanged] = useState(false)
+  const [curValue, setCurValue] = useState('')
+  const [open, setOpen] = useState(false)
+  const [changed, setChanged] = useState(false)
   const [scrollTo, setScrollTo] = useState(0)
 
-  useEffect(() => _setItems(items.sort()), [items])
+  useEffect(() => setCurValue(value), [value])
 
   useEffect(() => {
-    setIsOpen(value.length >= 2 && isChanged)
-  }, [value, isChanged])
+    if (curValue.length >= 2 && changed) {
+      if (!open) setOpen(true)
 
-  useEffect(() => {
-    if (isOpen) {
-      const itemIndex = _items.findIndex((item) => item[0] === value[0])
-      if (itemIndex >= 0) setScrollTo(itemIndex)
+      const index = items.findIndex((item) => item.startsWith(value))
+      if (index >= 0) setScrollTo(index)
     }
-  }, [isOpen, _items, value])
+  }, [curValue])
 
-  const onValueChange = (e) => {
-    setIsChanged(true)
-    onChange(e.target.value)
+  const onChangeValue = (e) => {
+    if (!changed) setChanged(true)
+    setCurValue(e.target.value)
   }
 
-  const onValueSelect = (i) => {
-    setIsChanged(false)
-    setIsOpen(false)
-    onChange(_items[i])
+  const onSelectValue = (i) => {
+    setChanged(false)
+    setOpen(false)
+    setCurValue(items[i])
+    onSelect(items[i])
+  }
+
+  const onClear = () => {
+    setChanged(false)
+    setOpen(false)
+    setCurValue('')
+    onSelect('')
+  }
+
+  const onBlur = () => {
+    const timeout = setTimeout(() => {
+      setChanged(false)
+      setOpen(false)
+    }, 200)
+    return () => clearTimeout(timeout)
   }
 
   return (
-    <div className="select" tabIndex="0">
+    <div className="select">
       {label && <label className="select__label">{label}</label>}
       <input
         className="select__input"
         type="text"
-        value={value}
+        value={curValue}
         placeholder={placeholder}
-        onChange={onValueChange}
+        onChange={onChangeValue}
         disabled={disabled}
+        onBlur={onBlur}
       />
 
-      {!!value.length && (
-        <Remove className="select__clear-icon" onClick={() => onChange('')} />
+      {!!curValue.length && (
+        <ClearIcon className="select__clear-icon" onClick={onClear} />
       )}
 
       <Dropdown
-        isOpen={isOpen}
-        items={_items}
-        onClick={onValueSelect}
+        isOpen={open}
+        items={items}
+        onSelect={onSelectValue}
         scrollTo={scrollTo}
       />
     </div>
