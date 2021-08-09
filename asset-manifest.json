@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/need-for-drive/static/css/main.fcf76034.chunk.css",
-    "main.js": "/need-for-drive/static/js/main.957e1485.chunk.js",
-    "main.js.map": "/need-for-drive/static/js/main.957e1485.chunk.js.map",
+    "main.css": "/need-for-drive/static/css/main.101ed7bb.chunk.css",
+    "main.js": "/need-for-drive/static/js/main.62d3d9eb.chunk.js",
+    "main.js.map": "/need-for-drive/static/js/main.62d3d9eb.chunk.js.map",
     "runtime-main.js": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js",
     "runtime-main.js.map": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js.map",
-    "static/js/2.5f811eda.chunk.js": "/need-for-drive/static/js/2.5f811eda.chunk.js",
-    "static/js/2.5f811eda.chunk.js.map": "/need-for-drive/static/js/2.5f811eda.chunk.js.map",
+    "static/css/2.5b5b985f.chunk.css": "/need-for-drive/static/css/2.5b5b985f.chunk.css",
+    "static/js/2.f35de54b.chunk.js": "/need-for-drive/static/js/2.f35de54b.chunk.js",
+    "static/js/2.f35de54b.chunk.js.map": "/need-for-drive/static/js/2.f35de54b.chunk.js.map",
     "index.html": "/need-for-drive/index.html",
-    "static/css/main.fcf76034.chunk.css.map": "/need-for-drive/static/css/main.fcf76034.chunk.css.map",
-    "static/js/2.5f811eda.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.5f811eda.chunk.js.LICENSE.txt",
+    "static/css/2.5b5b985f.chunk.css.map": "/need-for-drive/static/css/2.5b5b985f.chunk.css.map",
+    "static/css/main.101ed7bb.chunk.css.map": "/need-for-drive/static/css/main.101ed7bb.chunk.css.map",
+    "static/js/2.f35de54b.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.f35de54b.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/need-for-drive/static/media/cursor.e525f3f1.svg",
     "static/media/car1.7e813c65.png": "/need-for-drive/static/media/car1.7e813c65.png",
     "static/media/close.01609553.svg": "/need-for-drive/static/media/close.01609553.svg",
@@ -21,7 +23,7 @@
     "static/media/menu_btn.33a03786.svg": "/need-for-drive/static/media/menu_btn.33a03786.svg",
     "static/media/menu_close.1d4598cc.svg": "/need-for-drive/static/media/menu_close.1d4598cc.svg",
     "static/media/Breadcrumbs.scss": "/need-for-drive/static/media/next.3f54b55d.svg",
-    "static/media/Radio.scss": "/need-for-drive/static/media/pointer.ffdfd958.svg",
+    "static/media/Checkbox.scss": "/need-for-drive/static/media/pointer.ffdfd958.svg",
     "static/media/right-arrow.7591c327.svg": "/need-for-drive/static/media/right-arrow.7591c327.svg",
     "static/media/slider-card1.024ae8f2.jpg": "/need-for-drive/static/media/slider-card1.024ae8f2.jpg",
     "static/media/slider-card2.21d07787.jpg": "/need-for-drive/static/media/slider-card2.21d07787.jpg",
@@ -31,8 +33,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.1e5b2fd7.js",
-    "static/js/2.5f811eda.chunk.js",
-    "static/css/main.fcf76034.chunk.css",
-    "static/js/main.957e1485.chunk.js"
+    "static/css/2.5b5b985f.chunk.css",
+    "static/js/2.f35de54b.chunk.js",
+    "static/css/main.101ed7bb.chunk.css",
+    "static/js/main.62d3d9eb.chunk.js"
   ]
 }
