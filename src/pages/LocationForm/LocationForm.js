@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import './ChoiceLocationForm.scss'
+import './LocationForm.scss'
 import Select from '../../components/Select/Select'
 import Map from '../../components/Map/Map'
 import { useApi } from '../../hooks/useApi'
 import { useMapQuestApi } from '../../hooks/useMapQuestApi'
 
-const ChoiceLocationForm = ({ city, point, onChange }) => {
+const LocationForm = ({ city, point, onChange }) => {
   const [points, setPoints] = useState([])
   const [selectablePoints, setSelectablePoints] = useState([])
   const [selectableCities, setSelectableCities] = useState([])
@@ -60,8 +60,8 @@ const ChoiceLocationForm = ({ city, point, onChange }) => {
   }
 
   return (
-    <form className="choice-location-form">
-      <section className="choice-location-form__wrapper">
+    <form className="form">
+      <section className="form__section form__section_column">
         <Select
           label="Город"
           value={city}
@@ -88,4 +88,4 @@ const ChoiceLocationForm = ({ city, point, onChange }) => {
   )
 }
 
-export default ChoiceLocationForm
+export default LocationForm

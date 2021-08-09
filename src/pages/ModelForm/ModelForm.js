@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import './ChoiceModelForm.scss'
+import './ModelForm.scss'
 import car1 from '../../assets/images/car1.png'
 import Radio from '../../components/Radio/Radio'
 import Card from '../../components/Card/Card'
@@ -15,31 +15,34 @@ const items = [
   { id: 'ab6', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
 ]
 
-const sortValues = ['Все модели', 'Эконом', 'Премиум']
+const sorts = ['Все модели', 'Эконом', 'Премиум']
 
-const ChoiceModelForm = ({ model }) => {
+const ModelForm = ({ model, onChange }) => {
   const [curModel, setCurModel] = useState(null)
   const [models, setModels] = useState([])
-  const [sort, setSort] = useState(sortValues[0])
+  const [sort, setSort] = useState(sorts[0])
 
-  const onSortValueChange = (value) => {
-    setSort(value)
+  const onSortValueChange = (value) => setSort(value)
+
+  const onModelSelect = (model) => {
+    setCurModel(model)
+    onChange({ model })
   }
 
   return (
-    <form className="choice-model-form">
-      <section className="choice-model-form__radio-wrapper">
-        {sortValues.map((sortValue, index) => (
+    <form className="form">
+      <section className="form__section">
+        {sorts.map((_sort, index) => (
           <Radio
-            key={`${sortValue}-${index}`}
-            label={sortValue}
-            value={sortValue}
-            checked={sort === sortValue}
+            key={`${_sort}-${index}`}
+            label={_sort}
+            value={_sort}
+            checked={sort === _sort}
             onClick={onSortValueChange}
           />
         ))}
       </section>
-      <section className="choice-model-form__cards-wrapper">
+      <section className="form__cards-wrapper">
         {items.map((item) => (
           <Card
             key={item.id}
@@ -48,7 +51,7 @@ const ChoiceModelForm = ({ model }) => {
             img={item.img}
             imgAlt={item.name}
             selected={curModel && curModel.id === item.id}
-            onClick={() => setCurModel(item)}
+            onClick={() => onModelSelect(item)}
           />
         ))}
       </section>
@@ -57,4 +60,4 @@ const ChoiceModelForm = ({ model }) => {
   )
 }
 
-export default ChoiceModelForm
+export default ModelForm

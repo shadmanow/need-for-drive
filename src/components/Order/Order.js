@@ -1,12 +1,15 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import './Order.scss'
 import Button from '../Button/Button'
 
 const Order = ({ order }) => {
-  const { city, point, model } = order
+  const { city, point, model, color, startDate, endDate, tariff, services } =
+    order
   const { pathname } = useLocation()
+  const history = useHistory()
+
   return (
     <section className="order">
       <h2 className="order__title">Ваш заказ:</h2>
@@ -20,13 +23,46 @@ const Order = ({ order }) => {
         </span>
       </p>
 
-      {model ? (
+      {!!model && (
         <p className="order__item">
           <span>Модель</span>
           <span />
-          <span>{model}</span>
+          <span>{model.name}</span>
         </p>
-      ) : null}
+      )}
+
+      {!!color && (
+        <p className="order__item">
+          <span>Цвет</span>
+          <span />
+          <span>{color}</span>
+        </p>
+      )}
+
+      {!!(startDate && endDate) && (
+        <p className="order__item">
+          <span>Длительность аренды</span>
+          <span />
+          <span>{endDate - startDate}</span>
+        </p>
+      )}
+
+      {!!tariff && (
+        <p className="order__item">
+          <span>Тариф</span>
+          <span />
+          <span>{tariff}</span>
+        </p>
+      )}
+
+      {!!services &&
+        services.map((service, index) => (
+          <p className="order__item" key={`${service}-${index}`}>
+            <span>{service}</span>
+            <span />
+            <span>Да</span>
+          </p>
+        ))}
 
       <p className="order__price">
         <strong>Цена: </strong>
@@ -34,11 +70,20 @@ const Order = ({ order }) => {
       </p>
 
       {pathname === '/order/location' && (
-        <Button value="Выбрать модель" disabled={!city && !point} />
+        <Button
+          value="Выбрать модель"
+          disabled={!city && !point}
+          onClick={() => history.push('/order/model')}
+        />
       )}
       {pathname === '/order/model' && (
-        <Button value="Дополнительно" disabled={!model} />
+        <Button
+          value="Дополнительно"
+          disabled={!model}
+          onClick={() => history.push('/order/extra')}
+        />
       )}
+      {pathname === '/order/extra' && <Button value="Итого" />}
     </section>
   )
 }
