@@ -53,11 +53,17 @@
     }
   }
 
-  .react-datepicker__day--selected {
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
     background-color: $greenColor;
   }
 
   .react-datepicker__time-list {
+    .react-datepicker__time-list-item {
+      height: auto !important;
+      padding: 10px !important;
+    }
+
     .react-datepicker__time-list-item--selected {
       background-color: $greenColor !important;
     }

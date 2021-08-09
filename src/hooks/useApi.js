@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 
-const API_URL = process.env.REACT_APP_API_URL
+export const API_URL = process.env.REACT_APP_API_URL
 const API_APP_ID = process.env.REACT_APP_API_APP_ID
 const API_TOKEN = process.env.REACT_APP_API_TOKEN
 
@@ -9,14 +9,15 @@ const headers = {
   'X-Api-Factory-Application-Id': API_APP_ID,
 }
 
-function useApi() {
+function useApi(url) {
   const [loading, setLoading] = useState(false)
 
-  const get = useCallback(async (url) => {
+  /* eslint-disable */
+  const get = useCallback(async (params = '') => {
     try {
       setLoading(true)
 
-      const response = await fetch(`${API_URL}/api/${url}`, {
+      const response = await fetch(`${API_URL}/api/${url}${params}`, {
         headers,
       })
 
@@ -33,8 +34,9 @@ function useApi() {
       setLoading(false)
     }
   }, [])
+  /* eslint-enable */
 
-  return { get, loading }
+  return [{ get, post: null }, loading]
 }
 
-export { useApi, API_URL }
+export default useApi

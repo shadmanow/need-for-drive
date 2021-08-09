@@ -1,46 +1,31 @@
 import React, { useState, useEffect } from 'react'
 
 import './LocationForm.scss'
+import useMapQuestApi from '../../hooks/useMapQuestApi'
 import Select from '../../components/Select/Select'
 import Map from '../../components/Map/Map'
-import { useApi } from '../../hooks/useApi'
-import { useMapQuestApi } from '../../hooks/useMapQuestApi'
 
-const LocationForm = ({ city, point, onChange }) => {
-  const [points, setPoints] = useState([])
+const LocationForm = ({ city, point, onChange, cities, points }) => {
   const [selectablePoints, setSelectablePoints] = useState([])
-  const [selectableCities, setSelectableCities] = useState([])
-
-  const [mapCenter, setMapCenter] = useState({ lat: 54.314192, lng: 48.403132 })
-  const [mapMarkers, setMarkers] = useState([])
-
-  const { get } = useApi()
+  const [mapCenter, setMapCenter] = useState(null)
+  const [mapMarkers, setMarkers] = useState(null)
   const { getCity, getStreets } = useMapQuestApi()
 
+  /* eslint-disable */
   useEffect(() => {
-    get('/db/city')
-      .then(({ data }) => setSelectableCities(data))
+    const selectedCity = cities.find(({ name }) => name === city)
+    const curPoints = points.filter(
+      ({ cityId }) => cityId && cityId.id === selectedCity.id
+    )
+    setSelectablePoints(curPoints)
+
+    getCity(selectedCity.name)
+      .then(({ lat, lng }) => setMapCenter({ lat, lng }))
       .catch((error) => console.error(error))
+  }, [city])
+  /* eslint-enable */
 
-    get('/db/point')
-      .then(({ data }) => setPoints(data))
-      .catch((error) => console.error(error))
-  }, [])
-
-  useEffect(() => {
-    if (city && points.length) {
-      const selectedCity = selectableCities.find(({ name }) => name === city)
-      const selectablePoints = points.filter(
-        ({ cityId }) => cityId && cityId.id === selectedCity.id
-      )
-      setSelectablePoints(selectablePoints)
-
-      getCity(city)
-        .then(({ lat, lng }) => setMapCenter({ lat, lng }))
-        .catch((error) => console.error(error))
-    }
-  }, [city, points])
-
+  /* eslint-disable */
   useEffect(() => {
     if (selectablePoints.length) {
       const streets = selectablePoints.map(({ address }) => address)
@@ -49,6 +34,7 @@ const LocationForm = ({ city, point, onChange }) => {
         .catch((error) => console.error(error))
     }
   }, [selectablePoints])
+  /* eslint-enable */
 
   const onPointSelect = (point) => {
     onChange({ point })
@@ -66,7 +52,7 @@ const LocationForm = ({ city, point, onChange }) => {
           label="Город"
           value={city}
           placeholder="Начните вводить город..."
-          items={selectableCities.map(({ name }) => name)}
+          items={cities.map(({ name }) => name)}
           onSelect={(city) => onChange({ city, point: '' })}
         />
         <Select
