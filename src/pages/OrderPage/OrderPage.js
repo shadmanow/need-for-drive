@@ -23,7 +23,7 @@ const OrderPage = () => {
 
   const [order, setOrder] = useState({
     city: 'Ульяновск',
-    point: null,
+    point: '',
     model: null,
     color: null,
     tariff: null,
