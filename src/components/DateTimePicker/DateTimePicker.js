@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 
-import { ReactComponent as ClearIcon } from '../../assets/images/svg/close.svg'
 import 'react-datepicker/dist/react-datepicker.css'
 import './DateTimePicker.scss'
 

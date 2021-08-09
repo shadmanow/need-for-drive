@@ -15,8 +15,8 @@ const serviceValues = [
 
 const ExtraForm = ({ order, onChange }) => {
   const [form, setForm] = useState({
-    startDate: order.startDate ? order.startDate : new Date(),
-    endDate: order.endDate ? order.endDate : new Date(),
+    startDate: order.startDate ? order.startDate : null,
+    endDate: order.endDate ? order.endDate : null,
     color: order.color ? order.color : colorValues[0],
     tariff: order.tariff
       ? order.tariff

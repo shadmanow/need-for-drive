@@ -46,7 +46,7 @@ const Order = ({ order }) => {
         </p>
       )}
 
-      {!!(startDate && endDate) && (
+      {!!(startDate && endDate && endDate > startDate) && (
         <p className="order__item">
           <span>Длительность аренды</span>
           <span />
