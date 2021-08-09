@@ -17,9 +17,11 @@ const DateTimePicker = ({ label, date, onChange }) => {
         calendarClassName="datetime-picker-calendar"
         selected={date}
         onChange={onChange}
-        dateFormat="dd.MM.yyyy hh:mm"
+        dateFormat="dd.MM.yyyy HH:mm"
         locale="ru"
         showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={60}
         timeCaption="Время"
         isClearable
       />

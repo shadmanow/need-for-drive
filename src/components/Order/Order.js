@@ -7,6 +7,13 @@ import Button from '../Button/Button'
 const Order = ({ order }) => {
   const { city, point, model, color, startDate, endDate, tariff, services } =
     order
+
+  const interval = {
+    days: Math.round((endDate - startDate) / 1000 / 60 / 60 / 24),
+    hours: Math.round(((endDate - startDate) / 1000 / 60 / 60) % 24),
+    minutes: Math.round(((endDate - startDate) / 1000 / 60) % 60),
+  }
+
   const { pathname } = useLocation()
   const history = useHistory()
 
@@ -43,7 +50,11 @@ const Order = ({ order }) => {
         <p className="order__item">
           <span>Длительность аренды</span>
           <span />
-          <span>{endDate - startDate}</span>
+          <span>
+            {interval.days > 0 && `${interval.days}д `}
+            {interval.hours > 0 && `${interval.hours}ч `}
+            {interval.minutes > 0 && `${interval.minutes}м`}
+          </span>
         </p>
       )}
 
