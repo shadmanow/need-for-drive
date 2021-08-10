@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
 export const API_URL = process.env.REACT_APP_API_URL
 const API_APP_ID = process.env.REACT_APP_API_APP_ID
@@ -9,34 +9,62 @@ const headers = {
   'X-Api-Factory-Application-Id': API_APP_ID,
 }
 
-function useApi(url) {
-  const [loading, setLoading] = useState(false)
+const get = async (url) => {
+  const response = await fetch(`${API_URL}/api/${url}`, {
+    headers,
+  })
+  if (!response.ok) {
+    throw new Error(response.statusText)
+  }
+  return await response.json()
+}
 
-  /* eslint-disable */
-  const get = useCallback(async (params = '') => {
-    try {
-      setLoading(true)
+function useApi() {
+  const fetchCitiesAndPoints = useCallback(async () => {
+    let { data: cities } = await get('/db/city')
+    let { data: points } = await get('/db/point')
 
-      const response = await fetch(`${API_URL}/api/${url}${params}`, {
-        headers,
-      })
-
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
-
-      const data = await response.json()
-      setLoading(false)
-
-      return data
-    } catch (e) {
-      console.error(e)
-      setLoading(false)
-    }
+    cities = cities.map(({ id, name }) => ({ id, name }))
+    points = points
+      .filter(({ cityId }) => cityId)
+      .map(({ id, address, cityId: city }) => ({
+        id,
+        city,
+        address,
+      }))
+    cities = cities.filter((city) =>
+      points.some((point) => point.city.name === city.name)
+    )
+    return { cities, points }
   }, [])
-  /* eslint-enable */
 
-  return [{ get, post: null }, loading]
+  const fetchCars = useCallback(async (params = '') => {
+    let { data } = await get(`/db/car${params}`)
+    return data
+      .filter(({ categoryId }) => categoryId)
+      .map(
+        ({ id, name, categoryId, priceMax, priceMin, thumbnail, colors }) => {
+          const { name: category } = categoryId
+
+          let { path: imgPath } = thumbnail
+          if (imgPath.startsWith('/files')) {
+            imgPath = `${API_URL}${imgPath}`
+          }
+
+          return {
+            id,
+            name,
+            colors,
+            imgPath,
+            priceMax,
+            priceMin,
+            category,
+          }
+        }
+      )
+  }, [])
+
+  return { fetchCitiesAndPoints, fetchCars }
 }
 
 export default useApi

@@ -2,16 +2,9 @@ import React from 'react'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 
 import './ExtraForm.scss'
+import { COLORS, TARIFFS, SERVICES } from './ExtraFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
-
-const COLORS = ['Любой', 'Красный', 'Голубой']
-const TARIFFS = ['Поминутно, 7₽/мин', 'На сутки, 1999 ₽/сутки']
-const SERVICES = [
-  'Полный бак, 500р',
-  'Детское кресло, 200р',
-  'Правый руль, 1600р',
-]
 
 const ExtraForm = ({ order, onChange }) => {
   const onServicesChange = (service) => {

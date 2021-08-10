@@ -1,47 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import './ModelForm.scss'
-import { API_URL } from '../../hooks/useApi'
+import { INITIAL_SLICE, CATEGORIES } from './ModelFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Card from '../../components/Card/Card'
 import ButtonPagination from './ButtonPagination'
 
-const INITIAL_SLICE = 6
-const CATEGORIES = ['Все модели', 'Эконом+', 'Люкс', 'Спорт']
-
 const ModelForm = ({ model, onChange, models }) => {
-  const [mappedModels, setMappedModels] = useState([])
-  const [filteredModels, setFilteredModels] = useState([])
+  const [filteredModels, setFilteredModels] = useState(models)
   const [category, setCategory] = useState(CATEGORIES[0])
   const [slice, setSlice] = useState(INITIAL_SLICE)
-
-  /* eslint-disable */
-  useEffect(() => {
-    const curModels = models.map((model) => {
-      let imgPath = model.thumbnail.path
-      if (imgPath.startsWith('/files')) {
-        imgPath = `${API_URL}/${imgPath}`
-      }
-      return {
-        id: model.id,
-        name: model.name,
-        priceMin: model.priceMin,
-        priceMax: model.priceMax,
-        imgPath,
-        category: model.categoryId ? model.categoryId.name : null,
-      }
-    })
-    setMappedModels(curModels)
-    setFilteredModels(curModels)
-  }, [])
-  /* eslint-enable */
 
   const onCategorySelect = (category) => {
     let filtered = []
     if (category === CATEGORIES[0]) {
-      filtered = mappedModels
+      filtered = models
     } else {
-      filtered = mappedModels.filter((model) => model.category === category)
+      filtered = models.filter((model) => model.category === category)
     }
     setSlice(INITIAL_SLICE)
     setCategory(category)

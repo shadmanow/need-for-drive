@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import './OrderPage.scss'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Header from '../../components/Header/Header'
-import Order from '../../components/Order/Order'
+import OrderDescription from '../../components/OrderDescription/OrderDescription'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import LocationForm from '../LocationForm/LocationForm'
 import ModelForm from '../ModelForm/ModelForm'
@@ -13,10 +13,8 @@ import useApi from '../../hooks/useApi'
 import Loader from '../../components/Loader/Loader'
 
 const OrderPage = () => {
-  const [citiesReq, citiesReqLoading] = useApi('/db/city')
-  const [pointsReq, pointsReqLoading] = useApi('/db/point')
-  const [modelsReq, modelsReqLoading] = useApi('/db/car')
-
+  const { fetchCitiesAndPoints, fetchCars } = useApi()
+  const [loading, setLoading] = useState(false)
   const [cities, setCities] = useState([])
   const [points, setPoints] = useState([])
   const [models, setModels] = useState([])
@@ -32,28 +30,22 @@ const OrderPage = () => {
 
   const onFormChange = (value) => setOrder({ ...order, ...value })
 
-  /* eslint-disable */
   useEffect(() => {
-    citiesReq
-      .get()
-      .then(({ data }) => setCities(data))
-      .catch((error) => console.error(error))
-
-    pointsReq
-      .get()
-      .then(({ data }) => setPoints(data))
-      .catch((error) => console.error(error))
-
-    modelsReq
-      .get('?limit=30')
-      .then(({ data }) => setModels(data))
-      .catch((error) => console.error(error))
+    const fetchData = async () => {
+      setLoading(true)
+      const { cities, points } = await fetchCitiesAndPoints()
+      const cars = await fetchCars('?limit=30')
+      setCities(cities)
+      setPoints(points)
+      setModels(cars)
+      setLoading(false)
+    }
+    fetchData()
   }, [])
-  /* eslint-enable */
 
   return (
     <div className="order-page">
-      {(citiesReqLoading || pointsReqLoading || modelsReqLoading) && <Loader />}
+      {loading && <Loader />}
 
       <Header />
       <Sidebar />
@@ -90,7 +82,7 @@ const OrderPage = () => {
         </section>
 
         <section className="order-page__order-wrapper">
-          <Order order={order} />
+          <OrderDescription order={order} />
         </section>
       </main>
     </div>

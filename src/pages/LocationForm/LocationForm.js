@@ -6,41 +6,36 @@ import Select from '../../components/Select/Select'
 import Map from '../../components/Map/Map'
 
 const LocationForm = ({ city, point, onChange, cities, points }) => {
-  const [selectablePoints, setSelectablePoints] = useState([])
+  const { getCity, getStreets } = useMapQuestApi()
+  const [filteredPoints, setFilteredPoints] = useState([])
   const [mapCenter, setMapCenter] = useState(null)
   const [mapMarkers, setMarkers] = useState(null)
-  const { getCity, getStreets } = useMapQuestApi()
 
-  /* eslint-disable */
   useEffect(() => {
-    const selectedCity = cities.find(({ name }) => name === city)
-    const curPoints = points.filter(
-      ({ cityId }) => cityId && cityId.id === selectedCity.id
-    )
-    setSelectablePoints(curPoints)
+    const fetchData = async () => {
+      const selectedCity = cities.find(({ name }) => name === city)
+      const { id: cityId, name: cityName } = selectedCity
 
-    getCity(selectedCity.name)
-      .then(({ lat, lng }) => setMapCenter({ lat, lng }))
-      .catch((error) => console.error(error))
-  }, [city])
-  /* eslint-enable */
+      const filteredPoints = points.filter(({ city }) => city.id === cityId)
+      setFilteredPoints(filteredPoints)
 
-  /* eslint-disable */
-  useEffect(() => {
-    if (selectablePoints.length) {
-      const streets = selectablePoints.map(({ address }) => address)
-      getStreets(city, streets)
-        .then((locations) => setMarkers(locations))
-        .catch((error) => console.error(error))
+      const { lat, lng } = await getCity(cityName)
+      setMapCenter({ lat, lng })
+
+      const streets = filteredPoints.map(({ address }) => address)
+      const locations = await getStreets(cityName, streets)
+      setMarkers(locations)
     }
-  }, [selectablePoints])
-  /* eslint-enable */
+
+    if (city) {
+      fetchData()
+    }
+  }, [city])
 
   const onPointSelect = (point) => {
     onChange({ point })
-    const marker = mapMarkers.find(({ street }) => street === point)
-    if (marker) {
-      const { lat, lng } = marker
+    if (point) {
+      const { lat, lng } = mapMarkers.find(({ street }) => street === point)
       setMapCenter({ lat, lng, zoom: 15 })
     }
   }
@@ -59,9 +54,8 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
           label="Пункт выдачи"
           value={point}
           placeholder="Начните вводить пункт..."
-          items={selectablePoints.map(({ address }) => address)}
+          items={filteredPoints.map(({ address }) => address)}
           onSelect={onPointSelect}
-          disabled={!selectablePoints.length}
         />
       </section>
       <Map
