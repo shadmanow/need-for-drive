@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/need-for-drive/static/css/main.4ca23293.chunk.css",
-    "main.js": "/need-for-drive/static/js/main.abbebd9c.chunk.js",
-    "main.js.map": "/need-for-drive/static/js/main.abbebd9c.chunk.js.map",
+    "main.css": "/need-for-drive/static/css/main.c0544840.chunk.css",
+    "main.js": "/need-for-drive/static/js/main.e36c22bf.chunk.js",
+    "main.js.map": "/need-for-drive/static/js/main.e36c22bf.chunk.js.map",
     "runtime-main.js": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js",
     "runtime-main.js.map": "/need-for-drive/static/js/runtime-main.1e5b2fd7.js.map",
     "static/css/2.5b5b985f.chunk.css": "/need-for-drive/static/css/2.5b5b985f.chunk.css",
-    "static/js/2.85585092.chunk.js": "/need-for-drive/static/js/2.85585092.chunk.js",
-    "static/js/2.85585092.chunk.js.map": "/need-for-drive/static/js/2.85585092.chunk.js.map",
+    "static/js/2.66ecee72.chunk.js": "/need-for-drive/static/js/2.66ecee72.chunk.js",
+    "static/js/2.66ecee72.chunk.js.map": "/need-for-drive/static/js/2.66ecee72.chunk.js.map",
     "index.html": "/need-for-drive/index.html",
     "static/css/2.5b5b985f.chunk.css.map": "/need-for-drive/static/css/2.5b5b985f.chunk.css.map",
-    "static/css/main.4ca23293.chunk.css.map": "/need-for-drive/static/css/main.4ca23293.chunk.css.map",
-    "static/js/2.85585092.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.85585092.chunk.js.LICENSE.txt",
+    "static/css/main.c0544840.chunk.css.map": "/need-for-drive/static/css/main.c0544840.chunk.css.map",
+    "static/js/2.66ecee72.chunk.js.LICENSE.txt": "/need-for-drive/static/js/2.66ecee72.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/need-for-drive/static/media/cursor.e525f3f1.svg",
     "static/media/close.01609553.svg": "/need-for-drive/static/media/close.01609553.svg",
     "static/media/facebook.01c0ca6a.svg": "/need-for-drive/static/media/facebook.01c0ca6a.svg",
     "static/media/instagram.5e14e95a.svg": "/need-for-drive/static/media/instagram.5e14e95a.svg",
     "static/media/left-arrow.1752ae91.svg": "/need-for-drive/static/media/left-arrow.1752ae91.svg",
-    "static/media/loading.d9a4e522.svg": "/need-for-drive/static/media/loading.d9a4e522.svg",
+    "static/media/loading.f7d96b3b.svg": "/need-for-drive/static/media/loading.f7d96b3b.svg",
     "static/media/logo.b6042f1e.svg": "/need-for-drive/static/media/logo.b6042f1e.svg",
     "static/media/map.480be180.svg": "/need-for-drive/static/media/map.480be180.svg",
     "static/media/menu_btn.33a03786.svg": "/need-for-drive/static/media/menu_btn.33a03786.svg",
@@ -34,8 +34,8 @@
   "entrypoints": [
     "static/js/runtime-main.1e5b2fd7.js",
     "static/css/2.5b5b985f.chunk.css",
-    "static/js/2.85585092.chunk.js",
-    "static/css/main.4ca23293.chunk.css",
-    "static/js/main.abbebd9c.chunk.js"
+    "static/js/2.66ecee72.chunk.js",
+    "static/css/main.c0544840.chunk.css",
+    "static/js/main.e36c22bf.chunk.js"
   ]
 }
