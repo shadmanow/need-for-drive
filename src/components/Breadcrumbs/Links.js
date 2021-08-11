@@ -8,7 +8,7 @@ export const links = [
     name: 'Модель',
   },
   {
-    to: '/order/additionally',
+    to: '/order/extra',
     name: 'Дополнительно',
   },
   {

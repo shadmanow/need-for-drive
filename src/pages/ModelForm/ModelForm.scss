@@ -1,25 +1,9 @@
 @import "../../assets/styles/var";
 
-.choice-model-form {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-
-	&__radio-wrapper {
-		display: flex;
-		margin-bottom: 48px;
-
-		.radio {
-			margin-right: 16px;
-		}
-
-		:last-child {
-			margin-right: 0;
-		}
-	}
-
+.form {
 	&__cards-wrapper {
+		margin-top: 48px;
+		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 
@@ -47,7 +31,7 @@
 }
 
 /* Adaptive */
-.choice-model-form {
+.form {
 	@media screen and (max-width: $desktopSize - 1) {
 		&__cards-wrapper {
 			grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);

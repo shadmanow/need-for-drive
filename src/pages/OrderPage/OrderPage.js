@@ -6,14 +6,15 @@ import Sidebar from '../../components/Sidebar/Sidebar'
 import Header from '../../components/Header/Header'
 import Order from '../../components/Order/Order'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
-import ChoiceLocationForm from '../ChoiceLocationForm/ChoiceLocationForm'
-import ChoiceModelForm from '../ChoiceModelForm/ChoiceModelForm'
+import LocationForm from '../LocationForm/LocationForm'
+import ModelForm from '../ModelForm/ModelForm'
+import ExtraForm from '../ExtraForm/ExtraForm'
 
 const OrderPage = () => {
   const [order, setOrder] = useState({
     city: '',
     point: '',
-    model: '',
+    model: null,
   })
 
   const onFormChange = (value) => setOrder({ ...order, ...value })
@@ -29,14 +30,17 @@ const OrderPage = () => {
           <Switch>
             <Redirect exact from="/order" to="/order/location" />
             <Route path="/order/location">
-              <ChoiceLocationForm
+              <LocationForm
                 city={order.city}
                 point={order.point}
                 onChange={onFormChange}
               />
             </Route>
             <Route path="/order/model">
-              <ChoiceModelForm model={order.model} />
+              <ModelForm model={order.model} onChange={onFormChange} />
+            </Route>
+            <Route path="/order/extra">
+              <ExtraForm order={order} onChange={onFormChange} />
             </Route>
           </Switch>
         </section>

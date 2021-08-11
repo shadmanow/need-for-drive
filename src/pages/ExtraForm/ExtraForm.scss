@@ -1,0 +1,7 @@
+@import "../../assets/styles/var";
+
+.form {
+  &__section:nth-child(3), &__section:nth-child(4) {
+    align-items: flex-start !important;
+  }
+}
