@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import './OrderPage.scss'
-import { DEFAULT_VALUES } from './OrderPageConstants'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Header from '../../components/Header/Header'
 import OrderDescription from '../../components/OrderDescription/OrderDescription'
@@ -21,13 +20,27 @@ const OrderPage = () => {
   const [points, setPoints] = useState([])
   const [models, setModels] = useState([])
 
-  const [order, setOrder] = useState(DEFAULT_VALUES)
+  const [order, setOrder] = useState({
+    city: 'Ульяновск',
+    point: '',
+    model: null,
+    color: 'Любой',
+    tariff: 'На сутки',
+    services: [],
+  })
 
   const onLocationChange = (location) => setOrder({ ...location })
   const onOptionsChange = (options) => setOrder({ ...order, ...options })
   const onModelChange = ({ model }) => {
     const { city, point } = order
-    setOrder({ ...DEFAULT_VALUES, model, city, point })
+    setOrder({
+      model,
+      city,
+      point,
+      color: 'Любой',
+      tariff: 'На сутки',
+      services: [],
+    })
   }
 
   useEffect(() => {
