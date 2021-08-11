@@ -1,12 +1,12 @@
 import React from 'react'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 
-import './ExtraForm.scss'
-import { COLORS, TARIFFS, SERVICES } from './ExtraFormConstants'
+import './OptionsForm.scss'
+import { COLORS, TARIFFS, SERVICES } from './OptionsFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
-const ExtraForm = ({ order, onChange }) => {
+const OptionsForm = ({ order, onChange }) => {
   const onServicesChange = (service) => {
     let services = []
     if (order.services.includes(service)) {
@@ -51,6 +51,7 @@ const ExtraForm = ({ order, onChange }) => {
         <h2 className="form__title">Тариф</h2>
         {TARIFFS.map((item, index) => {
           const tariff = item.substr(0, item.indexOf(','))
+          console.log(tariff, order.tariff)
           return (
             <Radio
               key={`${item}-${index}`}
@@ -82,4 +83,4 @@ const ExtraForm = ({ order, onChange }) => {
   )
 }
 
-export default ExtraForm
+export default OptionsForm

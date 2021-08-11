@@ -41,9 +41,19 @@ function useApi() {
   const fetchCars = useCallback(async (params = '') => {
     let { data } = await get(`/db/car${params}`)
     return data
-      .filter(({ categoryId }) => categoryId)
+      .filter(({ categoryId, tank, number }) => categoryId && tank && number)
       .map(
-        ({ id, name, categoryId, priceMax, priceMin, thumbnail, colors }) => {
+        ({
+          id,
+          name,
+          categoryId,
+          priceMax,
+          priceMin,
+          thumbnail,
+          colors,
+          tank,
+          number,
+        }) => {
           const { name: category } = categoryId
 
           let { path: imgPath } = thumbnail
@@ -58,6 +68,8 @@ function useApi() {
             imgPath,
             priceMax,
             priceMin,
+            tank,
+            number,
             category,
           }
         }

@@ -1,22 +1,28 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 
 import './Breadcrumbs.scss'
-import { links } from './Links'
+import BreadcrumbsLink from './BreadcrumbsLink'
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ order }) => {
+  const { city, point, model, startDate, endDate } = order
   return (
     <section className="breadcrumbs">
-      {links.map((link, index) => (
-        <NavLink
-          key={`${link.name}-${index}`}
-          className="breadcrumbs__link"
-          activeClassName="breadcrumbs__link_active"
-          to={link.to}
-        >
-          {link.name}
-        </NavLink>
-      ))}
+      <BreadcrumbsLink name="Местоположение" to="/order/location" />
+      <BreadcrumbsLink
+        name="Модель"
+        to="/order/model"
+        disabled={!city || !point}
+      />
+      <BreadcrumbsLink
+        name="Дополнительно"
+        to="/order/options"
+        disabled={!model}
+      />
+      <BreadcrumbsLink
+        name="Итого"
+        to="/order/total"
+        disabled={!startDate || !endDate}
+      />
     </section>
   )
 }

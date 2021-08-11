@@ -19,7 +19,6 @@ const Select = ({
 
   useEffect(() => setCurValue(value), [value])
 
-  /* eslint-disable */
   useEffect(() => {
     if (curValue.length >= 2 && changed) {
       if (!open) setOpen(true)
@@ -28,7 +27,6 @@ const Select = ({
       if (index >= 0) setScrollTo(index)
     }
   }, [curValue])
-  /* eslint-enable */
 
   const onChangeValue = (e) => {
     if (!changed) setChanged(true)

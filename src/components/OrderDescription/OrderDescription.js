@@ -83,7 +83,7 @@ const OrderDescription = ({ order }) => {
       {pathname === '/order/location' && (
         <Button
           value="Выбрать модель"
-          disabled={!city && !point}
+          disabled={!city || !point}
           onClick={() => history.push('/order/model')}
         />
       )}
@@ -91,10 +91,16 @@ const OrderDescription = ({ order }) => {
         <Button
           value="Дополнительно"
           disabled={!model}
-          onClick={() => history.push('/order/extra')}
+          onClick={() => history.push('/order/options')}
         />
       )}
-      {pathname === '/order/extra' && <Button value="Итого" />}
+      {pathname === '/order/options' && (
+        <Button
+          value="Итого"
+          disabled={!(startDate && endDate && endDate > startDate)}
+          onClick={() => history.push('/order/total')}
+        />
+      )}
     </section>
   )
 }
