@@ -3,25 +3,29 @@ import DG from '2gis-maps'
 
 import './Map.scss'
 
+const DEFAULT_ZOOM = 11
+
 const Map = ({ label, center, markers, onMarkerClick }) => {
   const [map, setMap] = useState(null)
   const [curMarkers, setCurMarkers] = useState([])
   const mapRef = useRef()
 
+  /* eslint-disable */
   useEffect(() => {
-    if (mapRef.current) {
+    if (!center) return
+
+    if (map) {
+      map.setView(
+        [center.lat, center.lng],
+        center.zoom ? center.zoom : DEFAULT_ZOOM
+      )
+    } else if (mapRef.current) {
       const map = DG.map(mapRef.current, {
         center,
         zoom: 11,
         fullscreenControl: false,
       })
       setMap(map)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (map) {
-      map.setView([center.lat, center.lng], center.zoom ? center.zoom : 11)
     }
   }, [center])
 
@@ -40,6 +44,7 @@ const Map = ({ label, center, markers, onMarkerClick }) => {
       setCurMarkers(newMarkers)
     }
   }, [markers])
+  /* eslint-enable */
 
   return (
     <div className="map">

@@ -1,61 +1,58 @@
 import React, { useState } from 'react'
 
 import './ModelForm.scss'
-import car1 from '../../assets/images/car1.png'
+import { INITIAL_SLICE, CATEGORIES } from './ModelFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Card from '../../components/Card/Card'
 import ButtonPagination from './ButtonPagination'
 
-const items = [
-  { id: 'ab1', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-  { id: 'ab2', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-  { id: 'ab3', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-  { id: 'ab4', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-  { id: 'ab5', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-  { id: 'ab6', name: 'ELANTRA', price: '12 000 - 25 000 ₽', img: car1 },
-]
+const ModelForm = ({ model, onChange, models }) => {
+  const [filteredModels, setFilteredModels] = useState(models)
+  const [category, setCategory] = useState(CATEGORIES[0])
+  const [slice, setSlice] = useState(INITIAL_SLICE)
 
-const sorts = ['Все модели', 'Эконом', 'Премиум']
-
-const ModelForm = ({ model, onChange }) => {
-  const [curModel, setCurModel] = useState(null)
-  const [models, setModels] = useState([])
-  const [sort, setSort] = useState(sorts[0])
-
-  const onSortValueChange = (value) => setSort(value)
-
-  const onModelSelect = (model) => {
-    setCurModel(model)
-    onChange({ model })
+  const onCategorySelect = (category) => {
+    let filtered = []
+    if (category === CATEGORIES[0]) {
+      filtered = models
+    } else {
+      filtered = models.filter((model) => model.category === category)
+    }
+    setSlice(INITIAL_SLICE)
+    setCategory(category)
+    setFilteredModels(filtered)
   }
 
   return (
     <form className="form">
       <section className="form__section">
-        {sorts.map((_sort, index) => (
+        {CATEGORIES.map((item, index) => (
           <Radio
-            key={`${_sort}-${index}`}
-            label={_sort}
-            value={_sort}
-            checked={sort === _sort}
-            onClick={onSortValueChange}
+            key={`${item}-${index}`}
+            label={item}
+            value={item}
+            checked={category === item}
+            onClick={onCategorySelect}
           />
         ))}
       </section>
       <section className="form__cards-wrapper">
-        {items.map((item) => (
+        {filteredModels.slice(slice - INITIAL_SLICE, slice).map((item) => (
           <Card
             key={item.id}
             title={item.name}
-            subtitle={item.price}
-            img={item.img}
+            subtitle={`${item.priceMin} - ${item.priceMax} ₽`}
+            img={item.imgPath}
             imgAlt={item.name}
-            selected={curModel && curModel.id === item.id}
-            onClick={() => onModelSelect(item)}
+            selected={model && model.id === item.id}
+            onClick={() => onChange({ model: item })}
           />
         ))}
       </section>
-      <ButtonPagination countPages={10} onClick={() => {}} />
+      <ButtonPagination
+        countPages={Math.ceil(filteredModels.length / INITIAL_SLICE)}
+        onClick={(page) => setSlice(page * INITIAL_SLICE)}
+      />
     </form>
   )
 }

@@ -1,21 +1,21 @@
 import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 
-import './Order.scss'
+import './OrderDescription.scss'
+import { getDays, getHours, getMinutes } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
 
-const Order = ({ order }) => {
+const OrderDescription = ({ order }) => {
+  const history = useHistory()
+  const { pathname } = useLocation()
   const { city, point, model, color, startDate, endDate, tariff, services } =
     order
 
-  const interval = {
-    days: Math.round((endDate - startDate) / 1000 / 60 / 60 / 24),
-    hours: Math.round(((endDate - startDate) / 1000 / 60 / 60) % 24),
-    minutes: Math.round(((endDate - startDate) / 1000 / 60) % 60),
+  const leaseDuration = {
+    days: getDays(startDate, endDate),
+    hours: getHours(startDate, endDate),
+    minutes: getMinutes(startDate, endDate),
   }
-
-  const { pathname } = useLocation()
-  const history = useHistory()
 
   return (
     <section className="order">
@@ -51,9 +51,9 @@ const Order = ({ order }) => {
           <span>Длительность аренды</span>
           <span />
           <span>
-            {interval.days > 0 && `${interval.days}д `}
-            {interval.hours > 0 && `${interval.hours}ч `}
-            {interval.minutes > 0 && `${interval.minutes}м`}
+            {leaseDuration.days > 0 && `${leaseDuration.days}д `}
+            {leaseDuration.hours > 0 && `${leaseDuration.hours}ч `}
+            {leaseDuration.minutes > 0 && `${leaseDuration.minutes}м`}
           </span>
         </p>
       )}
@@ -99,4 +99,4 @@ const Order = ({ order }) => {
   )
 }
 
-export default Order
+export default OrderDescription

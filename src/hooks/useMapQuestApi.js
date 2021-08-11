@@ -60,4 +60,4 @@ function useMapQuestApi() {
   return { getCity, getStreets }
 }
 
-export { useMapQuestApi }
+export default useMapQuestApi
