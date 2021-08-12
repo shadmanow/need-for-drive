@@ -11,7 +11,7 @@ const DateTimePicker = ({ label, date, fromDate, onChange }) => {
   const [from, setFrom] = useState(null)
 
   useEffect(() => {
-    if (fromDate) {
+    if (fromDate && from) {
       const newFrom = new Date(fromDate)
       newFrom.setHours(from.getHours() + 24)
       setFrom(newFrom)
