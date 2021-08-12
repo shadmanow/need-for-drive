@@ -42,6 +42,7 @@ const OptionsForm = ({ order, onChange }) => {
         />
         <DateTimePicker
           label="По"
+          fromDate={order.startDate}
           date={order.endDate}
           onChange={(endDate) => onChange({ endDate })}
         />
@@ -51,7 +52,6 @@ const OptionsForm = ({ order, onChange }) => {
         <h2 className="form__title">Тариф</h2>
         {TARIFFS.map((item, index) => {
           const tariff = item.substr(0, item.indexOf(','))
-          console.log(tariff, order.tariff)
           return (
             <Radio
               key={`${item}-${index}`}
