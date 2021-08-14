@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import './OrderDescription.scss'
@@ -8,14 +9,32 @@ import Button from '../Button/Button'
 const OrderDescription = ({ order }) => {
   const history = useHistory()
   const { pathname } = useLocation()
-  const { city, point, model, color, startDate, endDate, tariff, services } =
-    order
+  const {
+    city,
+    point,
+    model,
+    color,
+    startDate,
+    endDate,
+    rate,
+    price,
+    isFullTank,
+    isNeedChildChair,
+    isRightWheel,
+  } = order
 
   const leaseDuration = {
     days: getDays(startDate, endDate),
     hours: getHours(startDate, endDate),
     minutes: getMinutes(startDate, endDate),
   }
+
+  const priceClasses = classNames('order__curprice', {
+    order__curprice_success:
+      price && model && price >= model.priceMin && price <= model.priceMax,
+    order__curprice_fail:
+      price && model && (price >= model.priceMax || price <= model.priceMin),
+  })
 
   return (
     <section className="order">
@@ -58,26 +77,46 @@ const OrderDescription = ({ order }) => {
         </p>
       )}
 
-      {!!tariff && (
+      {!!rate && (
         <p className="order__item">
           <span>Тариф</span>
           <span />
-          <span>{tariff}</span>
+          <span>{rate.name}</span>
         </p>
       )}
 
-      {!!services &&
-        services.map((service, index) => (
-          <p className="order__item" key={`${service}-${index}`}>
-            <span>{service}</span>
-            <span />
-            <span>Да</span>
-          </p>
-        ))}
+      {!!isFullTank && (
+        <p className="order__item">
+          <span>Полный бак</span>
+          <span />
+          <span>Да</span>
+        </p>
+      )}
+
+      {!!isNeedChildChair && (
+        <p className="order__item">
+          <span>Детское кресло</span>
+          <span />
+          <span>Да</span>
+        </p>
+      )}
+
+      {!!isRightWheel && (
+        <p className="order__item">
+          <span>Правый руль</span>
+          <span />
+          <span>Да</span>
+        </p>
+      )}
 
       <p className="order__price">
         <strong>Цена: </strong>
-        <span>от 8 000 до 12 000 ₽</span>
+        {model && (
+          <span>
+            от {model.priceMin} до {model.priceMax}₽{' '}
+            {price && <span className={priceClasses}>({price}₽)</span>}
+          </span>
+        )}
       </p>
 
       {pathname === '/order/location' && (

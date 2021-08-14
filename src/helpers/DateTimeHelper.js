@@ -1,3 +1,11 @@
+export const toMinutes = (startDate, endDate) => {
+  return Math.round((endDate - startDate) / 1000 / 60)
+}
+
+export const ceilToDays = (startDate, endDate) => {
+  return Math.ceil((endDate - startDate) / 1000 / 60 / 60 / 24)
+}
+
 export const getDays = (startDate, endDate) => {
   return Math.round((endDate - startDate) / 1000 / 60 / 60 / 24)
 }

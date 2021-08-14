@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { firstToUpperCase } from '../helpers/StringHelper'
 
 export const API_URL = process.env.REACT_APP_API_URL
 const API_APP_ID = process.env.REACT_APP_API_APP_ID
@@ -64,7 +65,7 @@ function useApi() {
           return {
             id,
             name,
-            colors,
+            colors: colors.map((color) => firstToUpperCase(color)),
             imgPath,
             priceMax,
             priceMin,
@@ -76,7 +77,17 @@ function useApi() {
       )
   }, [])
 
-  return { fetchCitiesAndPoints, fetchCars }
+  const fetchRates = useCallback(async () => {
+    const { data } = await get('/db/rate')
+    return data.map(({ id, price, rateTypeId }) => ({
+      id,
+      price,
+      unit: rateTypeId.unit,
+      name: rateTypeId.name,
+    }))
+  }, [])
+
+  return { fetchCitiesAndPoints, fetchCars, fetchRates }
 }
 
 export default useApi

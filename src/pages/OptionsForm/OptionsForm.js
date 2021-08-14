@@ -1,33 +1,22 @@
-import React from 'react'
-import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
+import React, { useState } from 'react'
 
 import './OptionsForm.scss'
-import { COLORS, TARIFFS, SERVICES } from './OptionsFormConstants'
+import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
-const OptionsForm = ({ order, onChange }) => {
-  const onServicesChange = (service) => {
-    let services = []
-    if (order.services.includes(service)) {
-      services = order.services.filter((serv) => serv !== service)
-    } else {
-      services = order.services
-      services.push(service)
-    }
-    onChange({ services })
-  }
-
+const OptionsForm = ({ rates, order, onChange }) => {
+  const colors = ['Любой', ...order.model.colors]
   return (
     <form className="form">
       <section className="form__section">
         <h2 className="form__title">Цвет</h2>
-        {COLORS.map((color, index) => (
+        {colors.map((color, index) => (
           <Radio
             key={`${color}-${index}`}
             label={color}
             value={color}
-            checked={order.color ? color === order.color : color === COLORS[0]}
+            checked={order.color ? color === order.color : color === colors[0]}
             onClick={(color) => onChange({ color })}
           />
         ))}
@@ -50,15 +39,18 @@ const OptionsForm = ({ order, onChange }) => {
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Тариф</h2>
-        {TARIFFS.map((item, index) => {
-          const tariff = item.substr(0, item.indexOf(','))
+        {rates.map((rate) => {
           return (
             <Radio
-              key={`${item}-${index}`}
-              label={item}
-              value={tariff}
-              checked={tariff === order.tariff}
-              onClick={(tariff) => onChange({ tariff })}
+              key={rate.id}
+              label={`${rate.name}, ${rate.price} ₽/${rate.unit}`}
+              value={rate.name}
+              checked={
+                order.rate?.name
+                  ? rate.name === order.rate.name
+                  : rate.name === 'Поминутно'
+              }
+              onClick={() => onChange({ rate })}
             />
           )
         })}
@@ -66,18 +58,23 @@ const OptionsForm = ({ order, onChange }) => {
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Доп. услуги</h2>
-        {SERVICES.map((service, index) => {
-          const serv = service.substr(0, service.indexOf(','))
-          return (
-            <Checkbox
-              key={`${service}-${index}`}
-              label={service}
-              value={serv}
-              checked={order.services.includes(serv)}
-              onClick={onServicesChange}
-            />
-          )
-        })}
+        <Checkbox
+          label="Полный бак, 500р"
+          checked={order.isFullTank}
+          onClick={() => onChange({ isFullTank: !order.isFullTank })}
+        />
+        <Checkbox
+          label="Детское кресло, 200р"
+          checked={order.isNeedChildChair}
+          onClick={() =>
+            onChange({ isNeedChildChair: !order.isNeedChildChair })
+          }
+        />
+        <Checkbox
+          label="Полный бак, 1600р"
+          checked={order.isRightWheel}
+          onClick={() => onChange({ isRightWheel: !order.isRightWheel })}
+        />
       </section>
     </form>
   )

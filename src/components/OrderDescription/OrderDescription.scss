@@ -56,6 +56,18 @@
     }
   }
 
+  &__curprice {
+    transition: 0.2s;
+  }
+
+  &__curprice_success {
+    color: $greenColor;
+  }
+
+  &__curprice_fail {
+    color: crimson;
+  }
+
   .button {
     width: 100%;
   }
