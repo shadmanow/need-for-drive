@@ -13,7 +13,7 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const selectedCity = cities.find(({ name }) => name === city)
+      const selectedCity = cities.find(({ name }) => name === city.name)
       const { id: cityId, name: cityName } = selectedCity
 
       const filteredPoints = points.filter(({ city }) => city.id === cityId)
@@ -33,11 +33,24 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
   }, [city])
 
   const onPointSelect = (point) => {
-    onChange({ city, point })
     if (point) {
+      const selectedPoint = points.find(({ name }) => name === point)
       const { lat, lng } = mapMarkers.find(({ street }) => street === point)
       setMapCenter({ lat, lng, zoom: 15 })
+      onChange({ city, point: selectedPoint })
+    } else {
+      onChange({ city, point: null })
     }
+  }
+
+  const onCitySelect = (city) => {
+    const selectedCity = cities.find(({ name }) => name === city)
+    onChange({ city: selectedCity, point: '' })
+  }
+
+  const onMarkerClick = ({ street }) => {
+    const point = points.find(({ address }) => address === street)
+    onChange({ city, point })
   }
 
   return (
@@ -45,14 +58,14 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
       <section className="form__section form__section_column">
         <Select
           label="Город"
-          value={city}
+          value={city ? city.name : ''}
           placeholder="Начните вводить город..."
           items={cities.map(({ name }) => name)}
-          onSelect={(city) => onChange({ city, point: '' })}
+          onSelect={onCitySelect}
         />
         <Select
           label="Пункт выдачи"
-          value={point}
+          value={point ? point.address : ''}
           placeholder="Начните вводить пункт..."
           items={filteredPoints.map(({ address }) => address)}
           onSelect={onPointSelect}
@@ -62,7 +75,7 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
         label="Выбрать на карте"
         center={mapCenter}
         markers={mapMarkers}
-        onMarkerClick={({ street }) => onChange({ city, point: street })}
+        onMarkerClick={onMarkerClick}
       />
     </form>
   )

@@ -33,6 +33,7 @@ const OrderPage = () => {
       const cars = await fetchCars('?limit=30')
       const rates = await fetchRates()
       setData({ cities, points, cars, rates })
+      setOrder({ ...order, city: cities[0] })
       setLoading(false)
     }
     fetchData()

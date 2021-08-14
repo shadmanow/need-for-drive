@@ -1,6 +1,6 @@
 export const DEFAULT_VALUES = {
-  city: 'Ульяновск',
-  point: '',
+  city: null,
+  point: null,
   model: null,
   color: null,
   rate: null,

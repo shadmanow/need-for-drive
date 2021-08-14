@@ -46,8 +46,8 @@ const OrderDescription = ({ order }) => {
         <span>Пункт выдачи</span>
         <span />
         <span>
-          {city},<br />
-          {point}
+          {city && city.name},<br />
+          {point && point.name}
         </span>
       </p>
 
