@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import './OrderDescription.scss'
 import { getDays, getHours, getMinutes } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
+import ConfirmOrderModal from '../ConfirmOrderModal/ConfirmOrderModal'
 
 const OrderDescription = ({ order }) => {
+  const [showModal, setShowModal] = useState(false)
   const history = useHistory()
   const { pathname } = useLocation()
   const {
@@ -113,8 +115,16 @@ const OrderDescription = ({ order }) => {
         <strong>Цена: </strong>
         {model && (
           <span>
-            от {model.priceMin} до {model.priceMax}₽{' '}
-            {price && <span className={priceClasses}>({price}₽)</span>}
+            {pathname !== '/order/total' ? (
+              <>
+                от {model.priceMin} до {model.priceMax}₽{' '}
+                {price && <span className={priceClasses}>({price}₽)</span>}
+              </>
+            ) : (
+              <>
+                <span>{price}₽</span>
+              </>
+            )}
           </span>
         )}
       </p>
@@ -140,6 +150,10 @@ const OrderDescription = ({ order }) => {
           onClick={() => history.push('/order/total')}
         />
       )}
+      {pathname === '/order/total' && (
+        <Button value="Заказать" onClick={() => setShowModal(true)} />
+      )}
+      <ConfirmOrderModal isOpen={showModal} />
     </section>
   )
 }
