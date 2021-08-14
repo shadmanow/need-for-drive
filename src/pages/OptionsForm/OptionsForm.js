@@ -26,31 +26,27 @@ const OptionsForm = ({ rates, order, onChange }) => {
         <h2 className="form__title">Дата аренды</h2>
         <DateTimePicker
           label="C"
-          date={order.startDate}
-          onChange={(startDate) => onChange({ startDate })}
+          date={order.dateFrom}
+          onChange={(dateFrom) => onChange({ dateFrom })}
         />
         <DateTimePicker
           label="По"
-          fromDate={order.startDate}
-          date={order.endDate}
-          onChange={(endDate) => onChange({ endDate })}
+          fromDate={order.dateTo}
+          date={order.dateTo}
+          onChange={(dateTo) => onChange({ dateTo })}
         />
       </section>
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Тариф</h2>
-        {rates.map((rate) => {
+        {rates.map((rateId) => {
           return (
             <Radio
-              key={rate.id}
-              label={`${rate.name}, ${rate.price} ₽/${rate.unit}`}
-              value={rate.name}
-              checked={
-                order.rate?.name
-                  ? rate.name === order.rate.name
-                  : rate.name === 'Поминутно'
-              }
-              onClick={() => onChange({ rate })}
+              key={rateId.id}
+              label={`${rateId.name}, ${rateId.price} ₽/${rateId.unit}`}
+              value={rateId.name}
+              checked={order.rate ? order.rate.name === rateId.name : false}
+              onClick={() => onChange({ rateId })}
             />
           )
         })}

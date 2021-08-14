@@ -5,7 +5,7 @@ import useMapQuestApi from '../../hooks/useMapQuestApi'
 import Select from '../../components/Select/Select'
 import Map from '../../components/Map/Map'
 
-const LocationForm = ({ city, point, onChange, cities, points }) => {
+const LocationForm = ({ cityId, pointId, onChange, cities, points }) => {
   const { getCity, getStreets } = useMapQuestApi()
   const [filteredPoints, setFilteredPoints] = useState([])
   const [mapCenter, setMapCenter] = useState(null)
@@ -13,44 +13,43 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const selectedCity = cities.find(({ name }) => name === city.name)
-      const { id: cityId, name: cityName } = selectedCity
+      const cityId = cities.find(({ name }) => name === cityId.name)
 
-      const filteredPoints = points.filter(({ city }) => city.id === cityId)
+      const filteredPoints = points.filter(({ city }) => city.id === cityId.id)
       setFilteredPoints(filteredPoints)
 
-      const { lat, lng } = await getCity(cityName)
+      const { lat, lng } = await getCity(cityId.name)
       setMapCenter({ lat, lng })
 
       const streets = filteredPoints.map(({ address }) => address)
-      const locations = await getStreets(cityName, streets)
+      const locations = await getStreets(cityId.name, streets)
       setMarkers(locations)
     }
 
-    if (city) {
+    if (cityId) {
       fetchData()
     }
-  }, [city])
+  }, [cityId])
 
   const onPointSelect = (point) => {
     if (point) {
-      const selectedPoint = points.find(({ name }) => name === point)
+      const pointId = points.find(({ name }) => name === point)
       const { lat, lng } = mapMarkers.find(({ street }) => street === point)
       setMapCenter({ lat, lng, zoom: 15 })
-      onChange({ city, point: selectedPoint })
+      onChange({ cityId, pointId })
     } else {
-      onChange({ city, point: null })
+      onChange({ cityId, pointId: null })
     }
   }
 
   const onCitySelect = (city) => {
-    const selectedCity = cities.find(({ name }) => name === city)
-    onChange({ city: selectedCity, point: '' })
+    const cityId = cities.find(({ name }) => name === city)
+    onChange({ cityId, point: '' })
   }
 
   const onMarkerClick = ({ street }) => {
-    const point = points.find(({ address }) => address === street)
-    onChange({ city, point })
+    const pointId = points.find(({ address }) => address === street)
+    onChange({ cityId, pointId })
   }
 
   return (
@@ -58,14 +57,14 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
       <section className="form__section form__section_column">
         <Select
           label="Город"
-          value={city ? city.name : ''}
+          value={cityId ? cityId.name : ''}
           placeholder="Начните вводить город..."
           items={cities.map(({ name }) => name)}
           onSelect={onCitySelect}
         />
         <Select
           label="Пункт выдачи"
-          value={point ? point.address : ''}
+          value={pointId ? pointId.address : ''}
           placeholder="Начните вводить пункт..."
           items={filteredPoints.map(({ address }) => address)}
           onSelect={onPointSelect}

@@ -6,19 +6,21 @@ import './OrderDescription.scss'
 import { getDays, getHours, getMinutes } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
 import ConfirmOrderModal from '../ConfirmOrderModal/ConfirmOrderModal'
+import useApi from '../../hooks/useApi'
 
 const OrderDescription = ({ order }) => {
-  const [showModal, setShowModal] = useState(false)
+  const { sendOrder } = useApi()
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const history = useHistory()
   const { pathname } = useLocation()
   const {
-    city,
-    point,
-    model,
+    cityId,
+    pointId,
+    carId,
     color,
-    startDate,
-    endDate,
-    rate,
+    dateFrom,
+    dateTo,
+    rateId,
     price,
     isFullTank,
     isNeedChildChair,
@@ -26,17 +28,26 @@ const OrderDescription = ({ order }) => {
   } = order
 
   const leaseDuration = {
-    days: getDays(startDate, endDate),
-    hours: getHours(startDate, endDate),
-    minutes: getMinutes(startDate, endDate),
+    days: getDays(dateFrom, dateTo),
+    hours: getHours(dateFrom, dateTo),
+    minutes: getMinutes(dateFrom, dateTo),
   }
 
   const priceClasses = classNames('order__curprice', {
     order__curprice_success:
-      price && model && price >= model.priceMin && price <= model.priceMax,
+      price && carId && price >= carId.priceMin && price <= carId.priceMax,
     order__curprice_fail:
-      price && model && (price >= model.priceMax || price <= model.priceMin),
+      price && carId && (price >= carId.priceMax || price <= carId.priceMin),
   })
+
+  const handleConfirm = async () => {
+    const id = await sendOrder(order)
+    history.push(`/order/${id}`)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
 
   return (
     <section className="order">
@@ -46,16 +57,16 @@ const OrderDescription = ({ order }) => {
         <span>Пункт выдачи</span>
         <span />
         <span>
-          {city && city.name},<br />
-          {point && point.name}
+          {cityId && cityId.name},<br />
+          {pointId && pointId.name}
         </span>
       </p>
 
-      {!!model && (
+      {!!carId && (
         <p className="order__item">
           <span>Модель</span>
           <span />
-          <span>{model.name}</span>
+          <span>{carId.name}</span>
         </p>
       )}
 
@@ -67,7 +78,7 @@ const OrderDescription = ({ order }) => {
         </p>
       )}
 
-      {!!(startDate && endDate && endDate > startDate) && (
+      {!!(dateFrom && dateTo && dateTo > dateFrom) && (
         <p className="order__item">
           <span>Длительность аренды</span>
           <span />
@@ -79,11 +90,11 @@ const OrderDescription = ({ order }) => {
         </p>
       )}
 
-      {!!rate && (
+      {!!rateId && (
         <p className="order__item">
           <span>Тариф</span>
           <span />
-          <span>{rate.name}</span>
+          <span>{rateId.name}</span>
         </p>
       )}
 
@@ -113,11 +124,11 @@ const OrderDescription = ({ order }) => {
 
       <p className="order__price">
         <strong>Цена: </strong>
-        {model && (
+        {carId && (
           <span>
-            {pathname !== '/order/total' ? (
+            {pathname !== '/order/total' && !order.id ? (
               <>
-                от {model.priceMin} до {model.priceMax}₽{' '}
+                от {carId.priceMin} до {carId.priceMax}₽{' '}
                 {price && <span className={priceClasses}>({price}₽)</span>}
               </>
             ) : (
@@ -132,28 +143,35 @@ const OrderDescription = ({ order }) => {
       {pathname === '/order/location' && (
         <Button
           value="Выбрать модель"
-          disabled={!city || !point}
+          disabled={!cityId || !pointId}
           onClick={() => history.push('/order/model')}
         />
       )}
       {pathname === '/order/model' && (
         <Button
           value="Дополнительно"
-          disabled={!model}
+          disabled={!carId}
           onClick={() => history.push('/order/options')}
         />
       )}
       {pathname === '/order/options' && (
         <Button
           value="Итого"
-          disabled={!(startDate && endDate && endDate > startDate)}
+          disabled={!(dateFrom && dateTo && dateTo > dateFrom)}
           onClick={() => history.push('/order/total')}
         />
       )}
       {pathname === '/order/total' && (
-        <Button value="Заказать" onClick={() => setShowModal(true)} />
+        <Button value="Заказать" onClick={() => setIsModalOpen(true)} />
       )}
-      <ConfirmOrderModal isOpen={showModal} />
+      <ConfirmOrderModal
+        title="Подтвердить заказ"
+        confirmText="Подтвердить"
+        cancelText="Вернуться"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isOpen={isModalOpen}
+      />
     </section>
   )
 }
