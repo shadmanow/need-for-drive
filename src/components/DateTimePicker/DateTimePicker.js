@@ -15,13 +15,8 @@ const DateTimePicker = ({ label, date, fromDate, onChange }) => {
   }, [fromDate])
 
   const onDatePickerChange = (date) => {
-    if (date) {
-      const currentDate = new Date()
-      if (date < currentDate) {
-        let hours = currentDate.getHours()
-        if (currentDate.getMinutes() > 0) hours += 1
-        date.setHours(hours)
-      }
+    if (date && date < from) {
+      date.setHours(from.getHours() + 1)
     }
     onChange(date)
   }
