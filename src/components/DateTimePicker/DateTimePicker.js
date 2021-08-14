@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import DatePicker from 'react-datepicker'
-
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru'
 
 import './DateTimePicker.scss'
-import { isPastTime } from '../../helpers/DateTimeHelper'
 
 const DateTimePicker = ({ label, date, fromDate, onChange }) => {
-  const [from, setFrom] = useState(null)
+  const [from, setFrom] = useState(new Date())
 
   useEffect(() => {
-    if (fromDate && from) {
-      const newFrom = new Date(fromDate)
-      newFrom.setHours(from.getHours() + 24)
-      setFrom(newFrom)
-    } else {
-      setFrom(new Date())
+    if (fromDate) {
+      setFrom(fromDate)
     }
   }, [fromDate])
 
@@ -30,6 +24,10 @@ const DateTimePicker = ({ label, date, fromDate, onChange }) => {
       }
     }
     onChange(date)
+  }
+
+  const isPastTime = (time) => {
+    return from.getTime() < new Date(time).getTime()
   }
 
   return (

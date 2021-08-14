@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import './OptionsForm.scss'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'

@@ -18,8 +18,10 @@ export const getMinutes = (startDate, endDate) => {
   return Math.round(((endDate - startDate) / 1000 / 60) % 60)
 }
 
-export const isPastTime = (time) => {
-  return new Date().getTime() < new Date(time).getTime()
+export const addHours = (date, hours) => {
+  const newDate = new Date(date)
+  newDate.setHours(newDate.getHours() + hours)
+  return newDate
 }
 
 export const formatDate = (date) => {
