@@ -33,11 +33,26 @@ const OrderDescription = ({ order }) => {
     minutes: getMinutes(dateFrom, dateTo),
   }
 
+  const services = [
+    {
+      name: 'Полный бак',
+      value: isFullTank,
+    },
+    {
+      name: 'Детское кресло',
+      value: isNeedChildChair,
+    },
+    {
+      name: 'Правый руль',
+      value: isRightWheel,
+    },
+  ]
+
   const priceClasses = classNames('order__curprice', {
     order__curprice_success:
-      price && carId && price >= carId.priceMin && price <= carId.priceMax,
+      carId && price >= carId.priceMin && price <= carId.priceMax,
     order__curprice_fail:
-      price && carId && (price >= carId.priceMax || price <= carId.priceMin),
+      carId && (price >= carId.priceMax || price <= carId.priceMin),
   })
 
   const handleConfirm = async () => {
@@ -58,7 +73,7 @@ const OrderDescription = ({ order }) => {
         <span />
         <span>
           {cityId && cityId.name},<br />
-          {pointId && pointId.name}
+          {pointId && pointId.address}
         </span>
       </p>
 
@@ -98,29 +113,15 @@ const OrderDescription = ({ order }) => {
         </p>
       )}
 
-      {!!isFullTank && (
-        <p className="order__item">
-          <span>Полный бак</span>
-          <span />
-          <span>Да</span>
-        </p>
-      )}
-
-      {!!isNeedChildChair && (
-        <p className="order__item">
-          <span>Детское кресло</span>
-          <span />
-          <span>Да</span>
-        </p>
-      )}
-
-      {!!isRightWheel && (
-        <p className="order__item">
-          <span>Правый руль</span>
-          <span />
-          <span>Да</span>
-        </p>
-      )}
+      {services
+        .filter((service) => service.value)
+        .map((service, index) => (
+          <p className="order__item" key={`${service.name}-${index}`}>
+            <span>{service.name}</span>
+            <span />
+            <span>Да</span>
+          </p>
+        ))}
 
       <p className="order__price">
         <strong>Цена: </strong>
@@ -157,7 +158,13 @@ const OrderDescription = ({ order }) => {
       {pathname === '/order/options' && (
         <Button
           value="Итого"
-          disabled={!(dateFrom && dateTo && dateTo > dateFrom)}
+          disabled={
+            !(
+              dateTo > dateFrom &&
+              price >= carId.priceMin &&
+              price <= carId.priceMax
+            )
+          }
           onClick={() => history.push('/order/total')}
         />
       )}

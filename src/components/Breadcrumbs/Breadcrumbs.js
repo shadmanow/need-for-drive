@@ -4,7 +4,7 @@ import './Breadcrumbs.scss'
 import BreadcrumbsLink from './BreadcrumbsLink'
 
 const Breadcrumbs = ({ order }) => {
-  const { city, point, model, startDate, endDate } = order
+  const { cityId, pointId, carId, dateFrom, dateTo } = order
 
   return (
     <section className="breadcrumbs">
@@ -18,17 +18,17 @@ const Breadcrumbs = ({ order }) => {
           <BreadcrumbsLink
             name="Модель"
             to="/order/model"
-            disabled={!city || !point}
+            disabled={!cityId || !pointId}
           />
           <BreadcrumbsLink
             name="Дополнительно"
             to="/order/options"
-            disabled={!model}
+            disabled={!carId}
           />
           <BreadcrumbsLink
             name="Итого"
             to="/order/total"
-            disabled={!startDate || !endDate}
+            disabled={!dateFrom || !dateTo}
           />
         </>
       )}

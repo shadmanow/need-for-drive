@@ -79,12 +79,12 @@ const pointMap = ({ id, address, cityId: city }) => ({
   address,
 })
 
-function useApi() {
+export default function useApi() {
   const fetchCitiesAndPoints = useCallback(async () => {
     let { data: cities } = await get('/db/city')
     let { data: points } = await get('/db/point')
 
-    cities = cities.map(carMap)
+    cities = cities.map(cityMap)
     points = points.filter(({ cityId }) => cityId).map(pointMap)
     cities = cities.filter((city) =>
       points.some((point) => point.city.name === city.name)
@@ -127,5 +127,3 @@ function useApi() {
 
   return { fetchCitiesAndPoints, fetchCars, fetchRates, sendOrder, fetchOrder }
 }
-
-export default useApi

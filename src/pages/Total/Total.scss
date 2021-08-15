@@ -1,13 +1,12 @@
 @import "../../assets/styles/var";
 
-.total-tab {
+.total {
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
-  &__confirmed {
+  &__status {
     font-weight: 400;
     font-size: 24px;
     line-height: 28px;
@@ -53,5 +52,14 @@
     object-fit: contain;
     width: 256px;
     height: 116px;
+  }
+}
+
+.total {
+  @media screen and (max-width: $tabletSize - 1) {
+    &__img {
+      width: 160px;
+      height: 73px;
+    }
   }
 }

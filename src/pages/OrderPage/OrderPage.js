@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Redirect, Route, Switch, useParams } from 'react-router-dom'
 
 import './OrderPage.scss'
-import { isId } from '../../helpers/StringHelper'
 import { DEFAULT_VALUES } from './OrderPageConstats'
-import costCalc from './CostCalculator'
+import priceCalc from './PriceCalculator'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Header from '../../components/Header/Header'
 import OrderDescription from '../../components/OrderDescription/OrderDescription'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import LocationForm from '../LocationForm/LocationForm'
-import ModelForm from '../ModelForm/ModelForm'
+import CarForm from '../CarForm/CarForm'
 import OptionsForm from '../OptionsForm/OptionsForm'
 import useApi from '../../hooks/useApi'
 import Loader from '../../components/Loader/Loader'
@@ -19,7 +18,6 @@ import Total from '../Total/Total'
 const OrderPage = ({ location }) => {
   const { fetchCitiesAndPoints, fetchCars, fetchRates, fetchOrder } = useApi()
   const { id } = useParams()
-  console.log(location.pathname)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
     cities: [],
@@ -30,51 +28,51 @@ const OrderPage = ({ location }) => {
   const [order, setOrder] = useState(DEFAULT_VALUES)
 
   useEffect(() => {
+    let fetchData
     if (id) {
-      const fetchData = async () => {
+      fetchData = async () => {
         setLoading(true)
         const order = await fetchOrder(id)
         setOrder({ ...order })
         setLoading(false)
       }
-      fetchData()
     } else {
-      const fetchData = async () => {
+      fetchData = async () => {
         setLoading(true)
         const { cities, points } = await fetchCitiesAndPoints()
         const cars = await fetchCars('?limit=30')
         const rates = await fetchRates()
         setData({ cities, points, cars, rates })
-        setOrder({ ...order, city: cities[0] })
+        setOrder({ ...order, cityId: cities[0] })
         setLoading(false)
       }
-      fetchData()
     }
+    fetchData()
   }, [])
 
-  const onLocationChange = (location) => setOrder({ ...location })
-  const onModelChange = ({ model }) => {
-    const { city, point } = order
+  const onLocationChange = (location) => {
+    setOrder({ ...DEFAULT_VALUES, ...location })
+  }
+
+  const onOptionsChange = (options) => setOrder({ ...order, ...options })
+
+  const onModelChange = ({ carId }) => {
     setOrder({
       ...DEFAULT_VALUES,
-      model,
-      city,
-      point,
+      carId,
+      cityId: order.cityId,
+      pointId: order.pointId,
     })
-  }
-  const onOptionsChange = (options) => {
-    console.log({ ...order, ...options })
-    setOrder({ ...order, ...options })
   }
 
   useEffect(() => {
-    if (order.startDate && order.endDate && order.rate) {
-      setOrder({ ...order, price: costCalc(order) })
+    if (order.dateTo && order.dateFrom && order.rateId) {
+      setOrder({ ...order, price: priceCalc(order) })
     }
   }, [
-    order.startDate,
-    order.endDate,
-    order.rate,
+    order.dateFrom,
+    order.dateTo,
+    order.rateId,
     order.isFullTank,
     order.isNeedChildChair,
     order.isRightWheel,
@@ -92,30 +90,25 @@ const OrderPage = ({ location }) => {
         <section className="order-page__form-wrapper">
           <Switch>
             <Route path="/order/location">
-              {!!(data.cities.length && data.points.length) && (
-                <LocationForm
-                  city={order.city}
-                  point={order.point}
-                  cities={data.cities}
-                  points={data.points}
-                  onChange={onLocationChange}
-                />
-              )}
+              <LocationForm
+                order={order}
+                cities={data.cities}
+                points={data.points}
+                onChange={onLocationChange}
+              />
             </Route>
 
-            {order.city && order.point && (
+            {order.cityId && order.pointId && (
               <Route path="/order/model">
-                {!!data.cars.length && (
-                  <ModelForm
-                    car={order.car}
-                    onChange={onModelChange}
-                    models={data.cars}
-                  />
-                )}
+                <CarForm
+                  order={order}
+                  onChange={onModelChange}
+                  cars={data.cars}
+                />
               </Route>
             )}
 
-            {order.model && (
+            {order.carId && (
               <Route path="/order/options">
                 <OptionsForm
                   rates={data.rates}
@@ -132,10 +125,10 @@ const OrderPage = ({ location }) => {
             )}
 
             {!location.pathname.startsWith('/order/info') && (
-              <Redirect exact from="/order" to="/order/location" />
-            )}
-            {!location.pathname.startsWith('/order/info') && (
-              <Redirect from="/order/*" to="/order/location" />
+              <>
+                <Redirect exact from="/order" to="/order/location" />
+                <Redirect from="/order/*" to="/order/location" />
+              </>
             )}
           </Switch>
         </section>

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru'
 
 import './DateTimePicker.scss'
 
-const DateTimePicker = ({ label, date, fromDate, onChange }) => {
+const DateTimePicker = ({ label, date, fromDate, onChange, error }) => {
   const [from, setFrom] = useState(new Date())
+
+  const inputClasses = classNames('datetime-picker-input', {
+    'datetime-picker-input_error': error,
+  })
 
   useEffect(() => {
     if (fromDate) {
@@ -31,7 +36,7 @@ const DateTimePicker = ({ label, date, fromDate, onChange }) => {
       <DatePicker
         locale={ru}
         selected={date}
-        className="datetime-picker-input"
+        className={inputClasses}
         calendarClassName="datetime-picker-calendar"
         onChange={onDatePickerChange}
         dateFormat="dd.MM.yyyy HH:mm"

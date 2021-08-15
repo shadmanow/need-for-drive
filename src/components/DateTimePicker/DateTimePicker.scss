@@ -37,6 +37,11 @@
   border: none;
   border-bottom: 1px solid $grayDarkColor;
   width: 224px;
+  transition: 0.3s border;
+
+  &.datetime-picker-input_error {
+    border-bottom: 1px solid crimson;
+  }
 }
 
 .datetime-picker-calendar {

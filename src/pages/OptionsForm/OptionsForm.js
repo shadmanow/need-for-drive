@@ -1,12 +1,13 @@
 import React from 'react'
 
 import './OptionsForm.scss'
+import { addHours } from '../../helpers/DateTimeHelper'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
 const OptionsForm = ({ rates, order, onChange }) => {
-  const colors = ['Любой', ...order.model.colors]
+  const colors = ['Любой', ...order.carId.colors]
   return (
     <form className="form">
       <section className="form__section">
@@ -27,12 +28,13 @@ const OptionsForm = ({ rates, order, onChange }) => {
         <DateTimePicker
           label="C"
           date={order.dateFrom}
+          error={order.dateFrom >= order.dateTo}
           onChange={(dateFrom) => onChange({ dateFrom })}
         />
         <DateTimePicker
           label="По"
-          fromDate={order.dateTo}
           date={order.dateTo}
+          error={order.dateFrom >= order.dateTo}
           onChange={(dateTo) => onChange({ dateTo })}
         />
       </section>
@@ -45,7 +47,7 @@ const OptionsForm = ({ rates, order, onChange }) => {
               key={rateId.id}
               label={`${rateId.name}, ${rateId.price} ₽/${rateId.unit}`}
               value={rateId.name}
-              checked={order.rate ? order.rate.name === rateId.name : false}
+              checked={order.rateId ? order.rateId.name === rateId.name : false}
               onClick={() => onChange({ rateId })}
             />
           )
