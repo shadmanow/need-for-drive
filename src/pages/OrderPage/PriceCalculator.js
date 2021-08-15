@@ -1,7 +1,8 @@
 import { ceilToDays, toMinutes } from '../../helpers/DateTimeHelper'
 
 export default function priceCalc(order) {
-  return durationCalc(order) + servicesCalc(order)
+  const price = durationCalc(order) + servicesCalc(order)
+  return price >= 0 ? price : 0
 }
 
 const durationCalc = ({ dateFrom, dateTo, rateId }) => {

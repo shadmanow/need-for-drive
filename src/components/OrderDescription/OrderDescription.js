@@ -7,12 +7,14 @@ import { getDays, getHours, getMinutes } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
 import ConfirmOrderModal from '../ConfirmOrderModal/ConfirmOrderModal'
 import useApi from '../../hooks/useApi'
+import OrderItem from './OrderItem'
 
 const OrderDescription = ({ order }) => {
-  const { sendOrder } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const history = useHistory()
+  const { sendOrder } = useApi()
   const { pathname } = useLocation()
+  const history = useHistory()
+
   const {
     cityId,
     pointId,
@@ -30,23 +32,7 @@ const OrderDescription = ({ order }) => {
   const leaseDuration = {
     days: getDays(dateFrom, dateTo),
     hours: getHours(dateFrom, dateTo),
-    minutes: getMinutes(dateFrom, dateTo),
   }
-
-  const services = [
-    {
-      name: 'Полный бак',
-      value: isFullTank,
-    },
-    {
-      name: 'Детское кресло',
-      value: isNeedChildChair,
-    },
-    {
-      name: 'Правый руль',
-      value: isRightWheel,
-    },
-  ]
 
   const priceClasses = classNames('order__curprice', {
     order__curprice_success:
@@ -57,88 +43,57 @@ const OrderDescription = ({ order }) => {
 
   const handleConfirm = async () => {
     const id = await sendOrder(order)
-    history.push(`/order/${id}`)
+    history.push(`/order/info/${id}`)
   }
 
-  const handleCancel = () => {
-    setIsModalOpen(false)
-  }
+  const handleCancel = () => setIsModalOpen(false)
 
   return (
     <section className="order">
       <h2 className="order__title">Ваш заказ:</h2>
 
-      <p className="order__item">
-        <span>Пункт выдачи</span>
-        <span />
-        <span>
-          {cityId && cityId.name},<br />
-          {pointId && pointId.address}
-        </span>
-      </p>
+      <OrderItem
+        name="Пункт выдачи"
+        value={
+          <>
+            {cityId && cityId.name},<br />
+            {pointId && pointId.address}
+          </>
+        }
+      />
 
-      {!!carId && (
-        <p className="order__item">
-          <span>Модель</span>
-          <span />
-          <span>{carId.name}</span>
-        </p>
-      )}
-
-      {!!color && (
-        <p className="order__item">
-          <span>Цвет</span>
-          <span />
-          <span>{color}</span>
-        </p>
-      )}
+      {!!carId && <OrderItem name="Модель" value={carId.name} />}
+      {!!color && <OrderItem name="Цвет" value={color} />}
 
       {!!(dateFrom && dateTo && dateTo > dateFrom) && (
-        <p className="order__item">
-          <span>Длительность аренды</span>
-          <span />
-          <span>
-            {leaseDuration.days > 0 && `${leaseDuration.days}д `}
-            {leaseDuration.hours > 0 && `${leaseDuration.hours}ч `}
-            {leaseDuration.minutes > 0 && `${leaseDuration.minutes}м`}
-          </span>
-        </p>
+        <OrderItem
+          name="Длительность аренды"
+          value={
+            <>
+              {leaseDuration.days > 0 && `${leaseDuration.days}д `}
+              {leaseDuration.hours > 0 && `${leaseDuration.hours}ч `}
+            </>
+          }
+        />
       )}
 
-      {!!rateId && (
-        <p className="order__item">
-          <span>Тариф</span>
-          <span />
-          <span>{rateId.name}</span>
-        </p>
-      )}
-
-      {services
-        .filter((service) => service.value)
-        .map((service, index) => (
-          <p className="order__item" key={`${service.name}-${index}`}>
-            <span>{service.name}</span>
-            <span />
-            <span>Да</span>
-          </p>
-        ))}
+      {!!rateId && <OrderItem name="Тариф" value={rateId.name} />}
+      {isFullTank && <OrderItem name="Полный бак" value="Да" />}
+      {isNeedChildChair && <OrderItem name="Детское кресло" value="Да" />}
+      {isRightWheel && <OrderItem name="Правый руль" value="Да" />}
 
       <p className="order__price">
         <strong>Цена: </strong>
-        {carId && (
-          <span>
-            {pathname !== '/order/total' && !order.id ? (
-              <>
-                от {carId.priceMin} до {carId.priceMax}₽{' '}
-                {price && <span className={priceClasses}>({price}₽)</span>}
-              </>
-            ) : (
-              <>
-                <span>{price}₽</span>
-              </>
-            )}
-          </span>
-        )}
+        <span>
+          {pathname !== '/order/total' ? (
+            <>
+              от {carId && carId.priceMin} до {carId && carId.priceMax}₽{' '}
+              {!!price && <span className={priceClasses}>({price}₽)</span>}
+            </>
+          ) : (
+            <span>{price}₽</span>
+          )}
+        </span>
       </p>
 
       {pathname === '/order/location' && (
@@ -171,6 +126,7 @@ const OrderDescription = ({ order }) => {
       {pathname === '/order/total' && (
         <Button value="Заказать" onClick={() => setIsModalOpen(true)} />
       )}
+
       <ConfirmOrderModal
         title="Подтвердить заказ"
         confirmText="Подтвердить"
