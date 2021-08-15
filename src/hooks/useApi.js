@@ -22,9 +22,13 @@ const get = async (url) => {
 }
 
 const post = async (url, body) => {
+  console.log(url, body)
   const response = await fetch(`${API_URL}/api/${url}`, {
     method: 'POST',
-    headers,
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(body),
   })
   if (!response.ok) {
@@ -105,11 +109,35 @@ export default function useApi() {
   }, [])
 
   const sendOrder = useCallback(async (order) => {
+    const {
+      cityId,
+      pointId,
+      carId,
+      color,
+      dateFrom,
+      dateTo,
+      rateId,
+      price,
+      isFullTank,
+      isNeedChildChair,
+      isRightWheel,
+    } = order
+
+    // console.log(order)
+
     const { data } = await post('/db/order', {
-      ...order,
-      dateFrom: order.dateFrom.getTime(),
-      dateTo: order.dateFrom.getTime(),
       orderStatusId: NEW_ORDER_STATUS_ID,
+      cityId: cityId.id,
+      pointId: pointId.id,
+      carId: carId.id,
+      rateId: rateId.id,
+      dateFrom: dateFrom.getTime(),
+      dateTo: dateTo.getTime(),
+      color,
+      price,
+      isFullTank,
+      isNeedChildChair,
+      isRightWheel,
     })
     return data.id
   }, [])

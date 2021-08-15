@@ -42,6 +42,7 @@ const OrderDescription = ({ order }) => {
   })
 
   const handleConfirm = async () => {
+    setIsModalOpen(false)
     const id = await sendOrder(order)
     history.push(`/order/info/${id}`)
   }

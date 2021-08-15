@@ -28,16 +28,8 @@ const OrderPage = ({ location }) => {
   const [order, setOrder] = useState(DEFAULT_VALUES)
 
   useEffect(() => {
-    let fetchData
-    if (id) {
-      fetchData = async () => {
-        setLoading(true)
-        const order = await fetchOrder(id)
-        setOrder({ ...order })
-        setLoading(false)
-      }
-    } else {
-      fetchData = async () => {
+    if (!id) {
+      const fetchData = async () => {
         setLoading(true)
         const { cities, points } = await fetchCitiesAndPoints()
         const cars = await fetchCars('?limit=30')
@@ -46,9 +38,21 @@ const OrderPage = ({ location }) => {
         setOrder({ ...order, cityId: cities[0] })
         setLoading(false)
       }
+      fetchData()
     }
-    fetchData()
   }, [])
+
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        setLoading(true)
+        const order = await fetchOrder(id)
+        setOrder({ ...order })
+        setLoading(false)
+      }
+      fetchData()
+    }
+  }, [location])
 
   const onLocationChange = (location) => {
     setOrder({ ...DEFAULT_VALUES, ...location })
