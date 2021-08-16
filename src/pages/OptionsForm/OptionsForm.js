@@ -1,7 +1,6 @@
 import React from 'react'
 
 import './OptionsForm.scss'
-import { addHours } from '../../helpers/DateTimeHelper'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
@@ -17,7 +16,7 @@ const OptionsForm = ({ rates, order, onChange }) => {
             key={`${color}-${index}`}
             label={color}
             value={color}
-            checked={order.color ? color === order.color : color === colors[0]}
+            checked={color === order.color}
             onClick={(color) => onChange({ color })}
           />
         ))}
@@ -47,7 +46,7 @@ const OptionsForm = ({ rates, order, onChange }) => {
               key={rateId.id}
               label={`${rateId.name}, ${rateId.price} ₽/${rateId.unit}`}
               value={rateId.name}
-              checked={order.rateId ? order.rateId.name === rateId.name : false}
+              checked={order.rateId?.name === rateId.name ?? false}
               onClick={() => onChange({ rateId })}
             />
           )

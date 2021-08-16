@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import './OrderDescription.scss'
-import { getDays, getHours, getMinutes } from '../../helpers/DateTimeHelper'
+import { getDays, getHours } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
 import ConfirmOrderModal from '../ConfirmOrderModal/ConfirmOrderModal'
 import useApi from '../../hooks/useApi'
@@ -36,9 +36,8 @@ const OrderDescription = ({ order }) => {
 
   const priceClasses = classNames('order__curprice', {
     order__curprice_success:
-      carId && price >= carId.priceMin && price <= carId.priceMax,
-    order__curprice_fail:
-      carId && (price >= carId.priceMax || price <= carId.priceMin),
+      price >= carId?.priceMin && price <= carId?.priceMax,
+    order__curprice_fail: price >= carId?.priceMax || price <= carId?.priceMin,
   })
 
   const handleConfirm = async () => {
@@ -57,8 +56,8 @@ const OrderDescription = ({ order }) => {
         name="Пункт выдачи"
         value={
           <>
-            {cityId && cityId.name},<br />
-            {pointId && pointId.address}
+            {cityId?.name},<br />
+            {pointId?.address}
           </>
         }
       />
@@ -66,7 +65,7 @@ const OrderDescription = ({ order }) => {
       {!!carId && <OrderItem name="Модель" value={carId.name} />}
       {!!color && <OrderItem name="Цвет" value={color} />}
 
-      {!!(dateFrom && dateTo && dateTo > dateFrom) && (
+      {!!(dateTo > dateFrom) && (
         <OrderItem
           name="Длительность аренды"
           value={
@@ -86,13 +85,17 @@ const OrderDescription = ({ order }) => {
       <p className="order__price">
         <strong>Цена: </strong>
         <span>
-          {pathname !== '/order/total' ? (
+          {pathname === '/order/total' ? (
+            <span>{price}₽</span>
+          ) : (
             <>
-              от {carId && carId.priceMin} до {carId && carId.priceMax}₽{' '}
+              {carId && (
+                <>
+                  от {carId.priceMin} до {carId.priceMax}₽{' '}
+                </>
+              )}
               {!!price && <span className={priceClasses}>({price}₽)</span>}
             </>
-          ) : (
-            <span>{price}₽</span>
           )}
         </span>
       </p>

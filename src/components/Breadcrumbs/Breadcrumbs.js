@@ -32,7 +32,7 @@ const Breadcrumbs = ({ order }) => {
               !dateFrom ||
               !dateTo ||
               !rateId ||
-              (carId && (carId.priceMin > price || carId.priceMax < price))
+              !(carId && (carId.priceMin > price || carId.priceMax < price))
             }
           />
         </>

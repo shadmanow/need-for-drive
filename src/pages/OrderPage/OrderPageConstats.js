@@ -7,4 +7,5 @@ export const DEFAULT_VALUES = {
   isFullTank: false,
   isNeedChildChair: false,
   isRightWheel: false,
+  price: 0,
 }

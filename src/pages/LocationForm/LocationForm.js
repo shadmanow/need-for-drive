@@ -57,14 +57,14 @@ const LocationForm = ({ order, onChange, cities, points }) => {
       <section className="form__section form__section_column">
         <Select
           label="Город"
-          value={order.cityId ? order.cityId.name : ''}
+          value={order.cityId?.name ?? ''}
           placeholder="Начните вводить город..."
           items={cities.map(({ name }) => name)}
           onSelect={onCitySelect}
         />
         <Select
           label="Пункт выдачи"
-          value={order.pointId ? order.pointId.address : ''}
+          value={order.pointId?.address ?? ''}
           placeholder="Начните вводить пункт..."
           items={filteredPoints.map(({ address }) => address)}
           onSelect={onPointSelect}
