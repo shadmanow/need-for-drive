@@ -10,9 +10,7 @@ const Breadcrumbs = ({ order }) => {
   return (
     <section className="breadcrumbs">
       {id ? (
-        <span className="breadcrumbs__order-number">
-          Заказ номер RU{getNumbers(id)}
-        </span>
+        <span className="breadcrumbs__order-number">Заказ номер {id}</span>
       ) : (
         <>
           <BreadcrumbsLink name="Местоположение" to="/order/location" />
