@@ -11,18 +11,18 @@ const Total = ({ order }) => {
   const { carId, dateFrom, orderStatusId, id } = order
   return (
     <form className="total">
-      <section className="total__wrapper">
-        {id && (
-          <>
-            {orderStatusId.id === CONFIRMED_ORDER_STATUS_ID && (
-              <h2 className="total__status">Ваш заказ подтвержден</h2>
-            )}
-            {orderStatusId.id === CANCELED_ORDER_STATUS_ID && (
-              <h2 className="total__status">Ваш заказ отменен</h2>
-            )}
-          </>
-        )}
+      {id && (
+        <>
+          {orderStatusId.id === CONFIRMED_ORDER_STATUS_ID && (
+            <h2 className="total__status">Ваш заказ подтвержден</h2>
+          )}
+          {orderStatusId.id === CANCELED_ORDER_STATUS_ID && (
+            <h2 className="total__status">Ваш заказ отменен</h2>
+          )}
+        </>
+      )}
 
+      <section className="total__wrapper">
         <h2 className="total__model-name">{carId.name}</h2>
         <p className="total__model-number">{carId.number}</p>
         <p className="total__model-tank">

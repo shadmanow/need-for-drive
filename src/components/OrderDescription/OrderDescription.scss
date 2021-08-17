@@ -77,6 +77,11 @@
   @media screen and (max-width: $tabletSize - 1) {
     align-items: flex-start;
     padding: 10px;
+    
+    &__title {
+      margin-bottom: 16px;
+    }
+
     .button {
       margin-left: -10px;
       width: calc(100% + 20px);
