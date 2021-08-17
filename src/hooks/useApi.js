@@ -1,35 +1,24 @@
 import { useCallback } from 'react'
 import { firstToUpperCase } from '../helpers/StringHelper'
-
-export const API_URL = process.env.REACT_APP_API_URL
-const API_APP_ID = process.env.REACT_APP_API_APP_ID
-const API_TOKEN = process.env.REACT_APP_API_TOKEN
-const NEW_ORDER_STATUS_ID = '5e26a191099b810b946c5d89'
+import {
+  API_TOKEN,
+  API_APP_ID,
+  API_URL,
+  CONFIRMED_ORDER_STATUS_ID,
+  CANCELED_ORDER_STATUS_ID,
+} from './useApiConstants'
 
 const headers = {
   Authorization: `Bearer ${API_TOKEN}`,
   'X-Api-Factory-Application-Id': API_APP_ID,
+  'Content-Type': 'application/json',
 }
 
-const get = async (url) => {
+const request = async (url, method = 'GET', body) => {
   const response = await fetch(`${API_URL}/api/${url}`, {
+    method,
     headers,
-  })
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
-  return await response.json()
-}
-
-const post = async (url, body) => {
-  console.log(url, body)
-  const response = await fetch(`${API_URL}/api/${url}`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   })
   if (!response.ok) {
     throw new Error(response.statusText)
@@ -83,10 +72,39 @@ const pointMap = ({ id, address, cityId: city }) => ({
   address,
 })
 
+const orderToBody = (order) => {
+  const {
+    cityId,
+    pointId,
+    carId,
+    color,
+    dateFrom,
+    dateTo,
+    rateId,
+    price,
+    isFullTank,
+    isNeedChildChair,
+    isRightWheel,
+  } = order
+  return {
+    cityId: cityId.id,
+    pointId: pointId.id,
+    carId: carId.id,
+    rateId: rateId.id,
+    dateFrom: dateFrom.getTime(),
+    dateTo: dateTo.getTime(),
+    color,
+    price,
+    isFullTank,
+    isNeedChildChair,
+    isRightWheel,
+  }
+}
+
 export default function useApi() {
   const fetchCitiesAndPoints = useCallback(async () => {
-    let { data: cities } = await get('/db/city')
-    let { data: points } = await get('/db/point')
+    let { data: cities } = await request('/db/city')
+    let { data: points } = await request('/db/point')
 
     cities = cities.map(cityMap)
     points = points.filter(({ cityId }) => cityId).map(pointMap)
@@ -97,53 +115,35 @@ export default function useApi() {
   }, [])
 
   const fetchCars = useCallback(async (params = '') => {
-    let { data } = await get(`/db/car${params}`)
+    let { data } = await request(`/db/car${params}`)
     return data
       .filter(({ categoryId, tank, number }) => categoryId && tank && number)
       .map(carMap)
   }, [])
 
   const fetchRates = useCallback(async () => {
-    const { data } = await get('/db/rate')
+    const { data } = await request('/db/rate')
     return data.map(rateMap)
   }, [])
 
   const sendOrder = useCallback(async (order) => {
-    const {
-      cityId,
-      pointId,
-      carId,
-      color,
-      dateFrom,
-      dateTo,
-      rateId,
-      price,
-      isFullTank,
-      isNeedChildChair,
-      isRightWheel,
-    } = order
+    const { data } = await request('/db/order', 'POST', {
+      ...orderToBody(order),
+      orderStatusId: CONFIRMED_ORDER_STATUS_ID,
+    })
+    return data.id
+  }, [])
 
-    // console.log(order)
-
-    const { data } = await post('/db/order', {
-      orderStatusId: NEW_ORDER_STATUS_ID,
-      cityId: cityId.id,
-      pointId: pointId.id,
-      carId: carId.id,
-      rateId: rateId.id,
-      dateFrom: dateFrom.getTime(),
-      dateTo: dateTo.getTime(),
-      color,
-      price,
-      isFullTank,
-      isNeedChildChair,
-      isRightWheel,
+  const cancelOrder = useCallback(async (order) => {
+    const { data } = await request(`/db/order/${order.id}`, 'PUT', {
+      ...orderToBody(order),
+      orderStatusId: CANCELED_ORDER_STATUS_ID,
     })
     return data.id
   }, [])
 
   const fetchOrder = useCallback(async (id) => {
-    const { data } = await get(`/db/order/${id}`)
+    const { data } = await request(`/db/order/${id}`)
     data.carId = carMap(data.carId)
     data.cityId = cityMap(data.cityId)
     data.pointId = pointMap(data.pointId)
@@ -153,5 +153,12 @@ export default function useApi() {
     return data
   }, [])
 
-  return { fetchCitiesAndPoints, fetchCars, fetchRates, sendOrder, fetchOrder }
+  return {
+    fetchCitiesAndPoints,
+    fetchCars,
+    fetchRates,
+    sendOrder,
+    fetchOrder,
+    cancelOrder,
+  }
 }

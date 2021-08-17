@@ -1,16 +1,17 @@
 import React from 'react'
+import { getNumbers } from '../../helpers/StringHelper'
 
 import './Breadcrumbs.scss'
 import BreadcrumbsLink from './BreadcrumbsLink'
 
 const Breadcrumbs = ({ order }) => {
-  const { cityId, pointId, carId, rateId, dateFrom, dateTo, price } = order
+  const { cityId, pointId, carId, rateId, dateFrom, dateTo, price, id } = order
 
   return (
     <section className="breadcrumbs">
-      {order.id ? (
+      {id ? (
         <span className="breadcrumbs__order-number">
-          Заказ номер RU58491823
+          Заказ номер RU{getNumbers(id)}
         </span>
       ) : (
         <>

@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
-import classNames from 'classnames'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import './OrderDescription.scss'
 import { getDays, getHours } from '../../helpers/DateTimeHelper'
 import Button from '../Button/Button'
 import ConfirmOrderModal from '../ConfirmOrderModal/ConfirmOrderModal'
-import useApi from '../../hooks/useApi'
 import OrderItem from './OrderItem'
+import OrderPrice from './OrderPrice'
+import { CANCELED_ORDER_STATUS_ID } from '../../hooks/useApiConstants'
 
-const OrderDescription = ({ order }) => {
+const OrderDescription = ({ order, onConfirm }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { sendOrder } = useApi()
   const { pathname } = useLocation()
   const history = useHistory()
 
@@ -27,6 +26,8 @@ const OrderDescription = ({ order }) => {
     isFullTank,
     isNeedChildChair,
     isRightWheel,
+    orderStatusId,
+    id,
   } = order
 
   const leaseDuration = {
@@ -34,16 +35,9 @@ const OrderDescription = ({ order }) => {
     hours: getHours(dateFrom, dateTo),
   }
 
-  const priceClasses = classNames('order__curprice', {
-    order__curprice_success:
-      price >= carId?.priceMin && price <= carId?.priceMax,
-    order__curprice_fail: price >= carId?.priceMax || price <= carId?.priceMin,
-  })
-
   const handleConfirm = async () => {
     setIsModalOpen(false)
-    const id = await sendOrder(order)
-    history.push(`/order/info/${id}`)
+    onConfirm()
   }
 
   const handleCancel = () => setIsModalOpen(false)
@@ -82,23 +76,7 @@ const OrderDescription = ({ order }) => {
       {isNeedChildChair && <OrderItem name="Детское кресло" value="Да" />}
       {isRightWheel && <OrderItem name="Правый руль" value="Да" />}
 
-      <p className="order__price">
-        <strong>Цена: </strong>
-        <span>
-          {pathname === '/order/total' ? (
-            <span>{price}₽</span>
-          ) : (
-            <>
-              {carId && (
-                <>
-                  от {carId.priceMin} до {carId.priceMax}₽{' '}
-                </>
-              )}
-              {!!price && <span className={priceClasses}>({price}₽)</span>}
-            </>
-          )}
-        </span>
-      </p>
+      <OrderPrice carId={carId} price={price} pathname={pathname} />
 
       {pathname === '/order/location' && (
         <Button
@@ -127,12 +105,21 @@ const OrderDescription = ({ order }) => {
           onClick={() => history.push('/order/total')}
         />
       )}
+
       {pathname === '/order/total' && (
         <Button value="Заказать" onClick={() => setIsModalOpen(true)} />
       )}
 
+      {id && orderStatusId.id !== CANCELED_ORDER_STATUS_ID && (
+        <Button
+          value="Отменить заказ"
+          color="red"
+          onClick={() => setIsModalOpen(true)}
+        />
+      )}
+
       <ConfirmOrderModal
-        title="Подтвердить заказ"
+        title={order.id ? 'Отменить заказ' : 'Подтвердить заказ'}
         confirmText="Подтвердить"
         cancelText="Вернуться"
         onConfirm={handleConfirm}

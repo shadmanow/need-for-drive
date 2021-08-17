@@ -2,13 +2,27 @@ import React from 'react'
 
 import './Total.scss'
 import { formatDate } from '../../helpers/DateTimeHelper'
+import {
+  CONFIRMED_ORDER_STATUS_ID,
+  CANCELED_ORDER_STATUS_ID,
+} from '../../hooks/useApiConstants'
 
 const Total = ({ order }) => {
-  const { carId, dateFrom, id } = order
+  const { carId, dateFrom, orderStatusId, id } = order
   return (
     <form className="total">
       <section className="total__wrapper">
-        {id && <h2 className="total__status">Ваш заказ подтвержден</h2>}
+        {id && (
+          <>
+            {orderStatusId.id === CONFIRMED_ORDER_STATUS_ID && (
+              <h2 className="total__status">Ваш заказ подтвержден</h2>
+            )}
+            {orderStatusId.id === CANCELED_ORDER_STATUS_ID && (
+              <h2 className="total__status">Ваш заказ отменен</h2>
+            )}
+          </>
+        )}
+
         <h2 className="total__model-name">{carId.name}</h2>
         <p className="total__model-number">{carId.number}</p>
         <p className="total__model-tank">

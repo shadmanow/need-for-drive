@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect, Route, Switch, useParams } from 'react-router-dom'
+import {
+  Redirect,
+  Route,
+  Switch,
+  useParams,
+  useHistory,
+} from 'react-router-dom'
 
 import './OrderPage.scss'
 import { DEFAULT_VALUES } from './OrderPageConstats'
@@ -16,7 +22,15 @@ import Loader from '../../components/Loader/Loader'
 import Total from '../Total/Total'
 
 const OrderPage = ({ location }) => {
-  const { fetchCitiesAndPoints, fetchCars, fetchRates, fetchOrder } = useApi()
+  const {
+    fetchCitiesAndPoints,
+    fetchCars,
+    fetchRates,
+    fetchOrder,
+    cancelOrder,
+    sendOrder,
+  } = useApi()
+  const history = useHistory()
   const { id } = useParams()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
@@ -28,7 +42,15 @@ const OrderPage = ({ location }) => {
   const [order, setOrder] = useState(DEFAULT_VALUES)
 
   useEffect(() => {
-    if (!id) {
+    if (id) {
+      const fetchData = async () => {
+        setLoading(true)
+        const order = await fetchOrder(id)
+        setOrder({ ...order })
+        setLoading(false)
+      }
+      fetchData()
+    } else {
       const fetchData = async () => {
         setLoading(true)
         const { cities, points } = await fetchCitiesAndPoints()
@@ -41,18 +63,6 @@ const OrderPage = ({ location }) => {
       fetchData()
     }
   }, [])
-
-  useEffect(() => {
-    if (id) {
-      const fetchData = async () => {
-        setLoading(true)
-        const order = await fetchOrder(id)
-        setOrder({ ...order })
-        setLoading(false)
-      }
-      fetchData()
-    }
-  }, [location])
 
   const onLocationChange = (location) => {
     setOrder({ ...DEFAULT_VALUES, ...location })
@@ -67,6 +77,17 @@ const OrderPage = ({ location }) => {
       cityId: order.cityId,
       pointId: order.pointId,
     })
+  }
+
+  const onConfirm = async () => {
+    let id
+    if (order.id) {
+      id = await cancelOrder(order)
+    } else {
+      id = await sendOrder(order)
+    }
+    history.push(`/order/info/${id}`)
+    history.go(0)
   }
 
   useEffect(() => {
@@ -138,7 +159,7 @@ const OrderPage = ({ location }) => {
         </section>
 
         <section className="order-page__order-wrapper">
-          <OrderDescription order={order} />
+          <OrderDescription order={order} onConfirm={onConfirm} />
         </section>
       </main>
     </div>
