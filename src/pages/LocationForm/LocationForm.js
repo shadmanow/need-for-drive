@@ -36,9 +36,9 @@ const LocationForm = ({ order, onChange, cities, points }) => {
       const pointId = points.find(({ address }) => address === point)
       const { lat, lng } = mapMarkers.find(({ street }) => street === point)
       setMapCenter({ lat, lng, zoom: 15 })
-      onChange({ pointId })
+      onChange({ cityId: pointId.city, pointId })
     } else {
-      onChange({ pointId: null })
+      onChange({ cityId: order.cityId, pointId: null })
     }
   }
 
