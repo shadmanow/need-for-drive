@@ -1,0 +1,47 @@
+@import "../../assets/styles/var";
+
+.total-tab {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    & > * {
+      margin-bottom: 8px;
+    }
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__model-name {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: $blackColor;
+  }
+
+  &__model-number {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    border: 1px solid $grayDarkColor;
+  }
+
+  &__model-tank,
+  &__model-date {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  &__img {
+    width: 256px;
+    height: 116px;
+  }
+}

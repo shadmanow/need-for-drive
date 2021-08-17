@@ -11,6 +11,7 @@ import ModelForm from '../ModelForm/ModelForm'
 import ExtraForm from '../ExtraForm/ExtraForm'
 import useApi from '../../hooks/useApi'
 import Loader from '../../components/Loader/Loader'
+import TotalTab from '../TotalTab/TotalTab'
 
 const OrderPage = () => {
   const { fetchCitiesAndPoints, fetchCars } = useApi()
@@ -77,6 +78,9 @@ const OrderPage = () => {
             </Route>
             <Route path="/order/extra">
               <ExtraForm order={order} onChange={onFormChange} />
+            </Route>
+            <Route>
+              <TotalTab order={order} />
             </Route>
           </Switch>
         </section>
