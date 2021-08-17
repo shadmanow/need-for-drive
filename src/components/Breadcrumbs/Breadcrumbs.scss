@@ -11,7 +11,11 @@
     font-weight: bold;
     font-size: 14px;
     line-height: 16px;
-    color: $grayDarkColor;
+    color: $linkBlackDefault;
+  }
+
+  &__link_disabled {
+    color: $linkDisabled;
   }
 
   &__link_active {

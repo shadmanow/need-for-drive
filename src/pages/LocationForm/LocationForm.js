@@ -33,7 +33,7 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
   }, [city])
 
   const onPointSelect = (point) => {
-    onChange({ point })
+    onChange({ city, point })
     if (point) {
       const { lat, lng } = mapMarkers.find(({ street }) => street === point)
       setMapCenter({ lat, lng, zoom: 15 })
@@ -62,7 +62,7 @@ const LocationForm = ({ city, point, onChange, cities, points }) => {
         label="Выбрать на карте"
         center={mapCenter}
         markers={mapMarkers}
-        onMarkerClick={({ street }) => onChange({ point: street })}
+        onMarkerClick={({ street }) => onChange({ city, point: street })}
       />
     </form>
   )

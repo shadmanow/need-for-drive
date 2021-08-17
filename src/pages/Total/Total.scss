@@ -41,6 +41,7 @@
   }
 
   &__img {
+    object-fit: contain;
     width: 256px;
     height: 116px;
   }

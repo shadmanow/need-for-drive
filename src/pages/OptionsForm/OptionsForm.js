@@ -1,12 +1,12 @@
 import React from 'react'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 
-import './ExtraForm.scss'
-import { COLORS, TARIFFS, SERVICES } from './ExtraFormConstants'
+import './OptionsForm.scss'
+import { COLORS, TARIFFS, SERVICES } from './OptionsFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
-const ExtraForm = ({ order, onChange }) => {
+const OptionsForm = ({ order, onChange }) => {
   const onServicesChange = (service) => {
     let services = []
     if (order.services.includes(service)) {
@@ -42,6 +42,7 @@ const ExtraForm = ({ order, onChange }) => {
         />
         <DateTimePicker
           label="По"
+          fromDate={order.startDate}
           date={order.endDate}
           onChange={(endDate) => onChange({ endDate })}
         />
@@ -82,4 +83,4 @@ const ExtraForm = ({ order, onChange }) => {
   )
 }
 
-export default ExtraForm
+export default OptionsForm
