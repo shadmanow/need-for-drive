@@ -1,12 +1,14 @@
 import React from 'react'
 
 import './OptionsForm.scss'
+import { SERVICES } from './OptionsFormConstants'
 import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
 const OptionsForm = ({ rates, order, onChange }) => {
   const colors = ['Любой', ...order.carId.colors]
+
   return (
     <form className="form">
       <section className="form__section">
@@ -55,23 +57,16 @@ const OptionsForm = ({ rates, order, onChange }) => {
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Доп. услуги</h2>
-        <Checkbox
-          label="Полный бак, 500р"
-          checked={order.isFullTank}
-          onClick={() => onChange({ isFullTank: !order.isFullTank })}
-        />
-        <Checkbox
-          label="Детское кресло, 200р"
-          checked={order.isNeedChildChair}
-          onClick={() =>
-            onChange({ isNeedChildChair: !order.isNeedChildChair })
-          }
-        />
-        <Checkbox
-          label="Полный бак, 1600р"
-          checked={order.isRightWheel}
-          onClick={() => onChange({ isRightWheel: !order.isRightWheel })}
-        />
+        {Object.entries(SERVICES).map(([key, value], index) => {
+          return (
+            <Checkbox
+              key={`${value}-${index}`}
+              label={value}
+              checked={order[key]}
+              onClick={() => onChange({ [key]: !order[key] })}
+            />
+          )
+        })}
       </section>
     </form>
   )

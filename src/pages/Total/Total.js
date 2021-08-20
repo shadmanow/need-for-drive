@@ -24,10 +24,12 @@ const Total = ({ order }) => {
 
       <section className="total__wrapper">
         <h2 className="total__model-name">{carId.name}</h2>
-        <p className="total__model-number">{carId.number}</p>
-        <p className="total__model-tank">
-          <strong>Топливо</strong> {carId.tank}%
-        </p>
+        {carId.number && <p className="total__model-number">{carId.number}</p>}
+        {carId.tank && (
+          <p className="total__model-tank">
+            <strong>Топливо</strong> {carId.tank}%
+          </p>
+        )}
         <p className="total__model-date">
           <strong>Доступна с</strong> {`${formatDate(dateFrom)}`}
         </p>
