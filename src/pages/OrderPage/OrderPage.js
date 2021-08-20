@@ -27,6 +27,7 @@ const OrderPage = ({ location }) => {
     fetchCars,
     fetchRates,
     fetchOrder,
+    fetchCategories,
     cancelOrder,
     sendOrder,
   } = useApi()
@@ -38,6 +39,7 @@ const OrderPage = ({ location }) => {
     rates: [],
     points: [],
     cars: [],
+    categories: [],
   })
   const [order, setOrder] = useState(DEFAULT_VALUES)
 
@@ -56,7 +58,8 @@ const OrderPage = ({ location }) => {
         const { cities, points } = await fetchCitiesAndPoints()
         const cars = await fetchCars('?limit=30')
         const rates = await fetchRates()
-        setData({ cities, points, cars, rates })
+        const categories = await fetchCategories()
+        setData({ cities, points, cars, rates, categories })
         setOrder({ ...order, cityId: cities[0] })
         setLoading(false)
       }
@@ -129,6 +132,7 @@ const OrderPage = ({ location }) => {
                   order={order}
                   onChange={onModelChange}
                   cars={data.cars}
+                  categories={data.categories}
                 />
               </Route>
             )}

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react'
 
 import './CarForm.scss'
-import { INITIAL_SLICE, CATEGORIES } from './CarFormConstants'
+import { INITIAL_SLICE, DEFAULT_CATEGORY } from './CarFormConstants'
 import Radio from '../../components/Radio/Radio'
 import Card from '../../components/Card/Card'
 import ButtonPagination from './ButtonPagination'
 
-const ModelForm = ({ order, onChange, cars }) => {
+const ModelForm = ({ order, onChange, cars, categories }) => {
+  const categoryArr = [DEFAULT_CATEGORY, ...categories]
   const [filteredCars, setFilteredCars] = useState(cars)
   const [startPage, setStartPage] = useState(1)
-  const [category, setCategory] = useState(CATEGORIES[0])
+  const [category, setCategory] = useState(DEFAULT_CATEGORY)
   const [slice, setSlice] = useState(INITIAL_SLICE)
 
   useEffect(() => {
     if (order.carId) {
       const selectedCarIndex = cars.findIndex(({ id }) => id === order.carId.id)
-      const page = Math.ceil((selectedCarIndex + 1) / INITIAL_SLICE)
+      let page = Math.ceil((selectedCarIndex + 1) / INITIAL_SLICE)
+      if (page === 0) page++
       setStartPage(page)
       setSlice(page * INITIAL_SLICE)
     }
@@ -23,20 +25,20 @@ const ModelForm = ({ order, onChange, cars }) => {
 
   const hangleCategoryClick = (category) => {
     let filtered =
-      category === CATEGORIES[0]
+      category === DEFAULT_CATEGORY
         ? cars
         : cars.filter((car) => car.category === category)
 
+    setStartPage(1)
     setCategory(category)
     setFilteredCars(filtered)
     setSlice(INITIAL_SLICE)
-    setStartPage(1)
   }
 
   return (
     <form className="form">
       <section className="form__section">
-        {CATEGORIES.map((item, index) => (
+        {categoryArr.map((item, index) => (
           <Radio
             key={`${item}-${index}`}
             label={item}

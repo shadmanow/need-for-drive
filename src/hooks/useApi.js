@@ -37,8 +37,6 @@ const carMap = ({
   tank,
   number,
 }) => {
-  const { name: category } = categoryId
-
   let { path: imgPath } = thumbnail
   if (imgPath.startsWith('/files')) {
     imgPath = `${API_URL}${imgPath}`
@@ -53,7 +51,7 @@ const carMap = ({
     priceMin,
     tank,
     number,
-    category,
+    category: categoryId?.name,
   }
 }
 
@@ -116,14 +114,17 @@ export default function useApi() {
 
   const fetchCars = useCallback(async (params = '') => {
     let { data } = await request(`/db/car${params}`)
-    return data
-      .filter(({ categoryId, tank, number }) => categoryId && tank && number)
-      .map(carMap)
+    return data.map(carMap)
   }, [])
 
   const fetchRates = useCallback(async () => {
     const { data } = await request('/db/rate')
     return data.map(rateMap)
+  }, [])
+
+  const fetchCategories = useCallback(async () => {
+    const { data } = await request('/db/category')
+    return data.map(({ name }) => name)
   }, [])
 
   const sendOrder = useCallback(async (order) => {
@@ -157,6 +158,7 @@ export default function useApi() {
     fetchCitiesAndPoints,
     fetchCars,
     fetchRates,
+    fetchCategories,
     sendOrder,
     fetchOrder,
     cancelOrder,
