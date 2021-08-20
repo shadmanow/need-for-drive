@@ -10,7 +10,6 @@ const Map = ({ label, center, markers, onMarkerClick }) => {
   const [curMarkers, setCurMarkers] = useState([])
   const mapRef = useRef()
 
-  /* eslint-disable */
   useEffect(() => {
     if (!center) return
 
@@ -27,6 +26,13 @@ const Map = ({ label, center, markers, onMarkerClick }) => {
       })
       setMap(map)
     }
+    return () => {
+      if (curMarkers) {
+        for (const marker of curMarkers) {
+          marker.off('click', handleMarkerClick)
+        }
+      }
+    }
   }, [center])
 
   useEffect(() => {
@@ -37,14 +43,23 @@ const Map = ({ label, center, markers, onMarkerClick }) => {
       const newMarkers = []
       for (const marker of markers) {
         const newMarker = DG.marker([marker.lat, marker.lng])
-        newMarker.on('click', () => onMarkerClick(marker))
+        newMarker.marker = marker
+        newMarker.on('click', () => handleMarkerClick(marker))
         newMarkers.push(newMarker)
         newMarker.addTo(map)
       }
       setCurMarkers(newMarkers)
     }
   }, [markers])
-  /* eslint-enable */
+
+  useEffect(() => {
+    for (const marker of curMarkers) {
+      marker.off('click', handleMarkerClick)
+      marker.on('click', () => handleMarkerClick(marker.marker))
+    }
+  }, [onMarkerClick])
+
+  const handleMarkerClick = (marker) => onMarkerClick(marker)
 
   return (
     <div className="map">

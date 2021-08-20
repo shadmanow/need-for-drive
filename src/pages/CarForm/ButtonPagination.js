@@ -3,15 +3,27 @@ import React, { useState, useEffect } from 'react'
 import Button from '../../components/Button/Button'
 import './ButtonPagination.scss'
 
-const ButtonPagination = ({ countPages, onClick }) => {
-  const [curPage, setCurPage] = useState(1)
+const ButtonPagination = ({ startPage, countPages, onClick }) => {
+  const [curCountPages, setCurCountPages] = useState(countPages)
+  const [curPage, setCurPage] = useState(startPage)
 
   const onButtonClick = (page) => {
     setCurPage(page)
     onClick(page)
   }
 
-  useEffect(() => setCurPage(1), [countPages])
+  useEffect(() => {
+    let count = countPages
+    if (count === 0) count++
+
+    setCurCountPages(count)
+
+    if (startPage > count) {
+      setCurPage(count)
+    } else {
+      setCurPage(startPage)
+    }
+  }, [startPage, countPages])
 
   return (
     <div className="button-pagination">
@@ -29,7 +41,7 @@ const ButtonPagination = ({ countPages, onClick }) => {
         value=">"
         color="default"
         className="button-pagination__button"
-        disabled={curPage === countPages}
+        disabled={curPage >= curCountPages}
         onClick={() => onButtonClick(curPage + 1)}
       />
     </div>

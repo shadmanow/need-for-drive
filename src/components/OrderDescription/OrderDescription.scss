@@ -56,16 +56,32 @@
     }
   }
 
+  &__curprice {
+    transition: 0.2s;
+  }
+
+  &__curprice_success {
+    color: $greenColor;
+  }
+
+  &__curprice_fail {
+    color: crimson;
+  }
+
   .button {
     width: 100%;
   }
 }
 
-/* Adaptive */
 .order {
   @media screen and (max-width: $tabletSize - 1) {
     align-items: flex-start;
     padding: 10px;
+    
+    &__title {
+      margin-bottom: 16px;
+    }
+
     .button {
       margin-left: -10px;
       width: calc(100% + 20px);

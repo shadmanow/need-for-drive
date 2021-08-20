@@ -1,33 +1,24 @@
 import React from 'react'
-import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 
 import './OptionsForm.scss'
-import { COLORS, TARIFFS, SERVICES } from './OptionsFormConstants'
+import { SERVICES } from './OptionsFormConstants'
+import DateTimePicker from '../../components/DateTimePicker/DateTimePicker'
 import Radio from '../../components/Radio/Radio'
 import Checkbox from '../../components/Checkbox/Checkbox'
 
-const OptionsForm = ({ order, onChange }) => {
-  const onServicesChange = (service) => {
-    let services = []
-    if (order.services.includes(service)) {
-      services = order.services.filter((serv) => serv !== service)
-    } else {
-      services = order.services
-      services.push(service)
-    }
-    onChange({ services })
-  }
+const OptionsForm = ({ rates, order, onChange }) => {
+  const colors = ['Любой', ...order.carId.colors]
 
   return (
     <form className="form">
       <section className="form__section">
         <h2 className="form__title">Цвет</h2>
-        {COLORS.map((color, index) => (
+        {colors.map((color, index) => (
           <Radio
             key={`${color}-${index}`}
             label={color}
             value={color}
-            checked={order.color ? color === order.color : color === COLORS[0]}
+            checked={color === order.color}
             onClick={(color) => onChange({ color })}
           />
         ))}
@@ -37,28 +28,28 @@ const OptionsForm = ({ order, onChange }) => {
         <h2 className="form__title">Дата аренды</h2>
         <DateTimePicker
           label="C"
-          date={order.startDate}
-          onChange={(startDate) => onChange({ startDate })}
+          date={order.dateFrom}
+          error={order.dateFrom >= order.dateTo}
+          onChange={(dateFrom) => onChange({ dateFrom })}
         />
         <DateTimePicker
           label="По"
-          fromDate={order.startDate}
-          date={order.endDate}
-          onChange={(endDate) => onChange({ endDate })}
+          date={order.dateTo}
+          error={order.dateFrom >= order.dateTo}
+          onChange={(dateTo) => onChange({ dateTo })}
         />
       </section>
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Тариф</h2>
-        {TARIFFS.map((item, index) => {
-          const tariff = item.substr(0, item.indexOf(','))
+        {rates.map((rateId) => {
           return (
             <Radio
-              key={`${item}-${index}`}
-              label={item}
-              value={tariff}
-              checked={tariff === order.tariff}
-              onClick={(tariff) => onChange({ tariff })}
+              key={rateId.id}
+              label={`${rateId.name}, ${rateId.price} ₽/${rateId.unit}`}
+              value={rateId.name}
+              checked={order.rateId?.name === rateId.name ?? false}
+              onClick={() => onChange({ rateId })}
             />
           )
         })}
@@ -66,15 +57,13 @@ const OptionsForm = ({ order, onChange }) => {
 
       <section className="form__section form__section_column">
         <h2 className="form__title">Доп. услуги</h2>
-        {SERVICES.map((service, index) => {
-          const serv = service.substr(0, service.indexOf(','))
+        {Object.entries(SERVICES).map(([key, value], index) => {
           return (
             <Checkbox
-              key={`${service}-${index}`}
-              label={service}
-              value={serv}
-              checked={order.services.includes(serv)}
-              onClick={onServicesChange}
+              key={`${value}-${index}`}
+              label={value}
+              checked={order[key]}
+              onClick={() => onChange({ [key]: !order[key] })}
             />
           )
         })}

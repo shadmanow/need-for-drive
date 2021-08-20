@@ -1,7 +1,5 @@
-export const COLORS = ['Любой', 'Красный', 'Голубой']
-export const TARIFFS = ['Поминутно, 7₽/мин', 'На сутки, 1999 ₽/сутки']
-export const SERVICES = [
-  'Полный бак, 500р',
-  'Детское кресло, 200р',
-  'Правый руль, 1600р',
-]
+export const SERVICES = {
+  isFullTank: 'Полный бак, 500р',
+  isNeedChildChair: 'Детское кресло, 200р',
+  isRightWheel: 'Правый руль, 1600р',
+}

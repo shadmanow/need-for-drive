@@ -1,12 +1,20 @@
 @import "../../assets/styles/var";
 
-.total-tab {
+.total {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  &__status {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: $blackColor;
+    padding-bottom: 16px;
+  }
 
   &__wrapper {
+    grid-column: 1 / 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -41,8 +49,44 @@
   }
 
   &__img {
+    align-self: start;
+    justify-self: end;
+    grid-column: 2 / 2;
     object-fit: contain;
     width: 256px;
     height: 116px;
+  }
+}
+
+.total {
+  @media screen and (max-width: $tabletSize - 1) {
+    grid-template-columns: 1.5fr 0.5fr;
+    
+    &__status {
+      grid-column: 1/ 3;
+      font-size: 20px;
+    }
+
+    &__img {
+      align-self: center;
+      width: 144px;
+      height: 66px;
+    }
+
+    &__model-name {
+      font-size: 14px;
+      line-height: 100%;
+    }
+
+    &__model-number {
+      font-size: 13px;
+      line-height: 100%;
+    }
+
+    &__model-tank,
+    &__model-date {
+      font-size: 13px;
+      line-height: 100%;
+    }
   }
 }

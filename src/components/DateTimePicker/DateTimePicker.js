@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from 'react'
+import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
-
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru'
 
 import './DateTimePicker.scss'
-import { isPastTime } from '../../helpers/DateTimeHelper'
 
-const DateTimePicker = ({ label, date, fromDate, onChange }) => {
-  const [from, setFrom] = useState(null)
+const DateTimePicker = ({ label, date, fromDate, onChange, error }) => {
+  const [from, setFrom] = useState(new Date())
+
+  const inputClasses = classNames('datetime-picker-input', {
+    'datetime-picker-input_error': error,
+  })
 
   useEffect(() => {
-    if (fromDate && from) {
-      const newFrom = new Date(fromDate)
-      newFrom.setHours(from.getHours() + 24)
-      setFrom(newFrom)
-    } else {
-      setFrom(new Date())
+    if (fromDate) {
+      setFrom(fromDate)
     }
   }, [fromDate])
 
   const onDatePickerChange = (date) => {
-    if (date) {
-      const currentDate = new Date()
-      if (date < currentDate) {
-        let hours = currentDate.getHours()
-        if (currentDate.getMinutes() > 0) hours += 1
-        date.setHours(hours)
-      }
+    if (date && date < from) {
+      date.setHours(from.getHours() + 1)
     }
     onChange(date)
+  }
+
+  const isPastTime = (time) => {
+    return from.getTime() < new Date(time).getTime()
   }
 
   return (
@@ -38,7 +36,7 @@ const DateTimePicker = ({ label, date, fromDate, onChange }) => {
       <DatePicker
         locale={ru}
         selected={date}
-        className="datetime-picker-input"
+        className={inputClasses}
         calendarClassName="datetime-picker-calendar"
         onChange={onDatePickerChange}
         dateFormat="dd.MM.yyyy HH:mm"

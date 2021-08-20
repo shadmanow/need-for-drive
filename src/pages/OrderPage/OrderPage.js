@@ -1,60 +1,110 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import {
+  Redirect,
+  Route,
+  Switch,
+  useParams,
+  useHistory,
+} from 'react-router-dom'
 
 import './OrderPage.scss'
+import { DEFAULT_VALUES } from './OrderPageConstats'
+import priceCalc from './PriceCalculator'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Header from '../../components/Header/Header'
 import OrderDescription from '../../components/OrderDescription/OrderDescription'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import LocationForm from '../LocationForm/LocationForm'
-import ModelForm from '../ModelForm/ModelForm'
+import CarForm from '../CarForm/CarForm'
 import OptionsForm from '../OptionsForm/OptionsForm'
 import useApi from '../../hooks/useApi'
 import Loader from '../../components/Loader/Loader'
 import Total from '../Total/Total'
 
-const OrderPage = () => {
-  const { fetchCitiesAndPoints, fetchCars } = useApi()
+const OrderPage = ({ location }) => {
+  const {
+    fetchCitiesAndPoints,
+    fetchCars,
+    fetchRates,
+    fetchOrder,
+    fetchCategories,
+    cancelOrder,
+    sendOrder,
+  } = useApi()
+  const history = useHistory()
+  const { id } = useParams()
   const [loading, setLoading] = useState(false)
-  const [cities, setCities] = useState([])
-  const [points, setPoints] = useState([])
-  const [models, setModels] = useState([])
-
-  const [order, setOrder] = useState({
-    city: 'Ульяновск',
-    point: '',
-    model: null,
-    color: 'Любой',
-    tariff: 'На сутки',
-    services: [],
+  const [data, setData] = useState({
+    cities: [],
+    rates: [],
+    points: [],
+    cars: [],
+    categories: [],
   })
+  const [order, setOrder] = useState(DEFAULT_VALUES)
 
-  const onLocationChange = (location) => setOrder({ ...location })
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        setLoading(true)
+        const order = await fetchOrder(id)
+        setOrder({ ...order })
+        setLoading(false)
+      }
+      fetchData()
+    } else {
+      const fetchData = async () => {
+        setLoading(true)
+        const { cities, points } = await fetchCitiesAndPoints()
+        const cars = await fetchCars('?limit=30')
+        const rates = await fetchRates()
+        const categories = await fetchCategories()
+        setData({ cities, points, cars, rates, categories })
+        setOrder({ ...order, cityId: cities[0] })
+        setLoading(false)
+      }
+      fetchData()
+    }
+  }, [])
+
+  const onLocationChange = (location) => {
+    setOrder({ ...DEFAULT_VALUES, ...location })
+  }
+
   const onOptionsChange = (options) => setOrder({ ...order, ...options })
-  const onModelChange = ({ model }) => {
-    const { city, point } = order
+
+  const onModelChange = ({ carId }) => {
     setOrder({
-      model,
-      city,
-      point,
-      color: 'Любой',
-      tariff: 'На сутки',
-      services: [],
+      ...DEFAULT_VALUES,
+      carId,
+      cityId: order.cityId,
+      pointId: order.pointId,
     })
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      const { cities, points } = await fetchCitiesAndPoints()
-      const cars = await fetchCars('?limit=30')
-      setCities(cities)
-      setPoints(points)
-      setModels(cars)
-      setLoading(false)
+  const onConfirm = async () => {
+    let id
+    if (order.id) {
+      id = await cancelOrder(order)
+    } else {
+      id = await sendOrder(order)
     }
-    fetchData()
-  }, [])
+    history.push(`/order/info/${id}`)
+    history.go(0)
+  }
+
+  useEffect(() => {
+    if (order.dateTo && order.dateFrom && order.rateId) {
+      setOrder({ ...order, price: priceCalc(order) })
+    }
+  }, [
+    order.dateFrom,
+    order.dateTo,
+    order.rateId,
+    order.isFullTank,
+    order.isNeedChildChair,
+    order.isRightWheel,
+  ])
 
   return (
     <div className="order-page">
@@ -68,48 +118,52 @@ const OrderPage = () => {
         <section className="order-page__form-wrapper">
           <Switch>
             <Route path="/order/location">
-              {!!(cities.length && points.length) && (
-                <LocationForm
-                  city={order.city}
-                  point={order.point}
-                  cities={cities}
-                  points={points}
-                  onChange={onLocationChange}
-                />
-              )}
+              <LocationForm
+                order={order}
+                cities={data.cities}
+                points={data.points}
+                onChange={onLocationChange}
+              />
             </Route>
 
-            {order.city && order.point && (
+            {order.cityId && order.pointId && (
               <Route path="/order/model">
-                {!!models.length && (
-                  <ModelForm
-                    model={order.model}
-                    onChange={onModelChange}
-                    models={models}
-                  />
-                )}
+                <CarForm
+                  order={order}
+                  onChange={onModelChange}
+                  cars={data.cars}
+                  categories={data.categories}
+                />
               </Route>
             )}
 
-            {order.model && (
+            {order.carId && (
               <Route path="/order/options">
-                <OptionsForm order={order} onChange={onOptionsChange} />
+                <OptionsForm
+                  rates={data.rates}
+                  order={order}
+                  onChange={onOptionsChange}
+                />
               </Route>
             )}
 
-            {order.startDate && order.endDate && (
-              <Route>
+            {((order.dateFrom && order.dateTo) || order.id) && (
+              <Route path={['/order/total', '/order/info/*']}>
                 <Total order={order} />
               </Route>
             )}
 
-            <Redirect exact from="/order" to="/order/location" />
-            <Redirect from="/order/*" to="/order/location" />
+            {!location.pathname.startsWith('/order/info') && (
+              <>
+                <Redirect exact from="/order" to="/order/location" />
+                <Redirect from="/order/*" to="/order/location" />
+              </>
+            )}
           </Switch>
         </section>
 
         <section className="order-page__order-wrapper">
-          <OrderDescription order={order} />
+          <OrderDescription order={order} onConfirm={onConfirm} />
         </section>
       </main>
     </div>

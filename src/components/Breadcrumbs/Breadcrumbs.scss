@@ -14,6 +14,13 @@
     color: $linkBlackDefault;
   }
 
+  &__order-number {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    color: $blackColor;
+  }
+
   &__link_disabled {
     color: $linkDisabled;
   }
@@ -42,7 +49,7 @@
     padding: 8px 3px;
 
     &__link {
-      font-size: 12px;
+      font-size: 0.8rem;
     }
 
     ::after {
